@@ -1,5 +1,5 @@
 // Covers the full user journey: homepage renders, /join username lookup
-// happy-path, and role-toggle updates the `hall request N` code display live.
+// happy-path, and role-toggle updates the `HALL<NN>` code display live.
 //
 // The /api/join/lookup endpoint is mocked via page.route() so this spec runs
 // against a Hugo preview alone — Hall-Monitor doesn't need to be up.
@@ -37,7 +37,7 @@ test("/join lookup happy-path shows the role picker", async ({ page }) => {
   await expect(page.locator("#code-display")).toBeVisible();
 });
 
-test("role toggles update the live `hall request N` code", async ({ page }) => {
+test("role toggles update the live `HALL<NN>` code", async ({ page }) => {
   await page.route("**/api/join/lookup*", (route) =>
     route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(HAPPY_PATH_LOOKUP) }),
   );
@@ -48,20 +48,20 @@ test("role toggles update the live `hall request N` code", async ({ page }) => {
   await expect(page.locator("#role-picker")).toBeVisible();
 
   // Starts at 0.
-  await expect(page.locator("#code-line")).toHaveText("hall request 0");
+  await expect(page.locator("#code-line")).toHaveText("HALL00");
 
   // Events (bit 0) → code 1.
   await page.locator('input[value="events"]').check();
-  await expect(page.locator("#code-line")).toHaveText("hall request 1");
+  await expect(page.locator("#code-line")).toHaveText("HALL01");
 
   // Add Ownership (bit 3) → code 1 | 8 = 9.
   await page.locator('input[value="ownership"]').check();
-  await expect(page.locator("#code-line")).toHaveText("hall request 9");
+  await expect(page.locator("#code-line")).toHaveText("HALL09");
 
   // Ticking Housing (bit 1) surfaces a conflict warning since the mock
   // reports someone already holds Housing for VETS.
   await page.locator('input[value="housing"]').check();
-  await expect(page.locator("#code-line")).toHaveText("hall request 11");
+  await expect(page.locator("#code-line")).toHaveText("HALL11");
   await expect(page.locator("#conflict-warnings")).toContainText("existing-housing-uuid");
 });
 

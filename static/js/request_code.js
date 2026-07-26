@@ -1,6 +1,8 @@
-// Watches the role checkboxes and updates the live `hall request N` display.
-// The integer is a bit-field over the ticked roles (see role_bits.py in
-// Hall-Monitor for the canonical bit assignments).
+// Watches the role checkboxes and updates the live `HALL<NN>` code display.
+// The digits are a bit-field over the ticked roles (see role_bits.py in
+// Hall-Monitor for the canonical bit assignments), zero-padded to two so
+// the code is the same six characters as a dazebot account-link code.
+// Mirrors mc_command.format_code on the Hall-Monitor side.
 
 document.addEventListener("DOMContentLoaded", () => {
   const picker = document.getElementById("role-picker");
@@ -12,7 +14,7 @@ document.addEventListener("DOMContentLoaded", () => {
     picker.querySelectorAll("input[type=checkbox]:checked").forEach((el) => {
       bits |= 1 << Number(el.dataset.bit);
     });
-    codeLine.textContent = `hall request ${bits}`;
+    codeLine.textContent = `HALL${String(bits).padStart(2, "0")}`;
 
     // Surface conflict warnings for any ticked role currently held by someone else.
     const lookup = window.__hallwayLookup;

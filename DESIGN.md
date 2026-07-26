@@ -6,7 +6,7 @@ Three concerns:
 
 1. **Static info** — a homepage explaining what the Guild Hall is.
 2. **/join eligibility lookup** — a form that asks Hall-Monitor whether the entered Minecraft username belongs to a chief/owner of a notable guild, and (if so) surfaces the four contact-role checkboxes.
-3. **Live code display** — as the user ticks roles, the page recomputes a 4-bit integer over those roles and shows the resulting `hall request N` command to type in Minecraft.
+3. **Live code display** — as the user ticks roles, the page recomputes a 4-bit integer over those roles and shows the resulting `HALL<NN>` code to type in Minecraft. The digits are zero-padded to two so the code matches the six-character shape of a dazebot account-link code; `static/js/request_code.js` mirrors `mc_command.format_code` in Hall-Monitor.
 
 The site never submits an invite request itself. The Discord invite is issued at MC-time by Hall-Monitor after the user types the command on `verify.wynnvets.org`.
 
@@ -33,7 +33,7 @@ This is why Hall-Monitor has no Traefik labels: it's reachable only through ngin
 - `static/js/lookup.js` — POSTs the username to `/api/join/lookup`. On success it un-hides the role picker and dispatches a `hallway:lookup` event.
 - `static/js/request_code.js` — listens for that event and for checkbox changes; recomputes the integer live using the bit ordering **Bit 0 = Events, Bit 1 = Housing, Bit 2 = Warring, Bit 3 = Ownership** (kept in sync with `role_bits.py` in Hall-Monitor — the canonical source of truth).
 
-For the full join flow end-to-end (what happens after the user types `hall request N` in-game), see Hall-Monitor's [DESIGN.md §2](../Hall-Monitor/DESIGN.md).
+For the full join flow end-to-end (what happens after the user types `HALL<NN>` in-game), see Hall-Monitor's [DESIGN.md §2](../Hall-Monitor/DESIGN.md).
 
 ## 5. Portability
 
