@@ -1,0 +1,41 @@
+{{ define "main" }}
+  {{/* Custom /join layout — Ananke's default single.html doesn't ship the form
+       markup we need. Everything else on the site uses Ananke's built-in layouts
+       unchanged; only this page is overridden. */}}
+  <section class="pv3 pv4-ns ph3 ph4-ns ph5-l">
+    <h1 class="f2 f-headline-ns fw2 georgia mid-gray">{{ .Title }}</h1>
+    <div class="lh-copy">
+      {{ .Content }}
+    </div>
+
+    <form id="lookup-form" class="mt4">
+      <label for="username" class="db mb2 fw6">Minecraft username</label>
+      <input id="username" name="username" type="text" required
+             class="input-reset ba b--black-20 pa2 mb2 db w-100 measure" />
+      <button type="submit"
+              class="f6 link dim br1 ph3 pv2 mb2 dib white bg-dark-gray b--none">
+        Check eligibility
+      </button>
+    </form>
+
+    <div id="lookup-result" class="mt3"></div>
+
+    <fieldset id="role-picker" class="dn mt4 pa0 bn">
+      <legend class="fw6 mb2">Which contact role(s) do you want?</legend>
+      <label class="db mb1"><input type="checkbox" name="role" value="ownership" data-bit="3"> Ownership Contact</label>
+      <label class="db mb1"><input type="checkbox" name="role" value="warring" data-bit="2"> Warring Contact</label>
+      <label class="db mb1"><input type="checkbox" name="role" value="housing" data-bit="1"> Housing Contact</label>
+      <label class="db mb1"><input type="checkbox" name="role" value="events" data-bit="0"> Events Contact</label>
+    </fieldset>
+
+    <div id="conflict-warnings" class="mt3"></div>
+
+    <div id="code-display" class="dn mt4 pa3 bg-light-gray br2">
+      <p class="mb2">To finish, join <code>verify.wynnvets.org</code> in Minecraft and type:</p>
+      <p class="f3 fw6"><code id="code-line">hall request 0</code></p>
+    </div>
+  </section>
+
+  <script src="/js/lookup.js" defer></script>
+  <script src="/js/request_code.js" defer></script>
+{{ end }}

@@ -1,0 +1,14 @@
+# Hugo site config. baseURL is set at build time via HUGO_BASEURL so the
+# same image can serve prod, staging, and local previews.
+baseURL = "https://hall.wynnvets.org/"
+languageCode = "en-us"
+title = "Wynncraft Guild Hall"
+theme = "ananke"
+
+[params]
+  description = "A meeting place for representatives of major Wynncraft guilds."
+  favicon = ""
+  site_logo = ""
+
+[markup.goldmark.renderer]
+  unsafe = true
