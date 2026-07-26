@@ -2,9 +2,14 @@
 #
 # `klakegg/hugo` images stopped being maintained in 2023, so we use
 # `hugomods/hugo` — an actively-maintained community image tracking
-# upstream releases. The `exts` variant ships the extended binary needed
-# by Ananke's SCSS pipeline.
-FROM hugomods/hugo:exts AS builder
+# upstream releases. The `std` variant ships extended Hugo + git + Sass,
+# which Ananke's SCSS pipeline needs. Explicitly pinned so a future
+# upstream bump can't silently break the site build.
+#
+# When bumping, first check theNewDynamic/gohugo-theme-ananke's
+# `netlify.toml` for its minimum Hugo version — Ananke currently
+# requires ≥ 0.160.0.
+FROM hugomods/hugo:std-0.164.0 AS builder
 WORKDIR /site
 
 # Vendored Ananke theme (git submodule at ./themes/ananke) — copied in explicitly
