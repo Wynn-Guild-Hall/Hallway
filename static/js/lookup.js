@@ -27,7 +27,11 @@ document.addEventListener("DOMContentLoaded", () => {
       }
       const data = await response.json();
       if (!data.eligible) {
-        result.textContent = "You're not currently chief or owner of a notable guild.";
+        if (data.reason === "guild not notable" && data.guild_tag) {
+          result.textContent = `You lead ${data.guild_tag}, but ${data.guild_tag} isn't currently a notable guild.`;
+        } else {
+          result.textContent = "You're not currently chief or owner of a notable guild.";
+        }
         return;
       }
       result.textContent = `Verified as a representative of ${data.guild_tag}. Pick your role(s):`;
