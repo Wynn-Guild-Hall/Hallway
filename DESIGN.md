@@ -24,7 +24,7 @@ Content is authored in Markdown under `content/`. The `/join` page uses a custom
 `nginx.conf` splits traffic:
 
 - `/` and any other static path → served from the built `/public`.
-- `/api/*` → reverse-proxied to `hall-monitor:${HALL_MONITOR_PORT}` over the `hall-internal` Docker network.
+- `/api/join/*` → reverse-proxied to `hall-monitor:${HALL_MONITOR_PORT}` over the `hall-internal` Docker network. Deliberately **not** all of `/api/`: `/api/verify` is the Minecraft-side path whose whole security model is that connecting to verify.wynnvets.org proves account ownership, and over HTTP that reduces to "name a chief, get an invite as them". Picolimbo reaches it on the `verify` network instead.
 
 This is why Hall-Monitor has no Traefik labels: it's reachable only through nginx.
 

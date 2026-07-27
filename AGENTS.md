@@ -6,7 +6,7 @@ Public website for the Wynncraft Guild Hall at [hall.wynnvets.org](https://hall.
 
 - **Build tool:** Hugo (static site generator, single Go binary).
 - **Theme:** [Ananke](https://github.com/theNewDynamic/gohugo-theme-ananke), vendored via git submodule at `themes/ananke`.
-- **Runtime:** nginx (from Dockerfile stage 2). No dynamic backend of its own — /api/* is reverse-proxied to Hall-Monitor.
+- **Runtime:** nginx (from Dockerfile stage 2). No dynamic backend of its own — `/api/join/*` is reverse-proxied to Hall-Monitor. Nothing else under `/api/` is; see `nginx.conf` for why.
 - **Deployed** as its own stack in the wynnvets [vets-deploy](../vets-deploy) repo on the `proxy` (Traefik) + `hall-internal` (bot API) networks.
 
 ## Layout landmarks
@@ -15,7 +15,7 @@ Public website for the Wynncraft Guild Hall at [hall.wynnvets.org](https://hall.
 - `layouts/join/single.html` — the ONLY override of an Ananke layout; needed for the form markup on /join.
 - `static/js/lookup.js` + `static/js/request_code.js` — the /join page's client-side logic.
 - `hugo.toml` — site config (`theme`, `baseURL`, params).
-- `nginx.conf` — split between static serve and `/api/*` reverse-proxy.
+- `nginx.conf` — split between static serve and the `/api/join/*` reverse-proxy. Widening that prefix would republish Hall-Monitor's Minecraft-side verify endpoint to the web.
 
 ## Don't
 
