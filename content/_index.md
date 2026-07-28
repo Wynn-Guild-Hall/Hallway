@@ -8,7 +8,7 @@ Membership in this platform does not imply endorsement of any guild — it exist
 
 ## Who's it for?
 
-Founders of notable Wynncraft guilds and leaders of those same guilds warring, housing, and/or event efforts.
+Founders of major Wynncraft guilds and leaders of those same guilds warring, housing, and/or event efforts.
 
 ### How do I join?
 

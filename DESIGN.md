@@ -5,7 +5,7 @@
 Three concerns:
 
 1. **Static info** — a homepage explaining what the Guild Hall is.
-2. **/join eligibility lookup** — a form that asks Hall-Monitor whether the entered Minecraft username belongs to a chief/owner of a notable guild, and (if so) surfaces the four contact-role checkboxes.
+2. **/join eligibility lookup** — a form that asks Hall-Monitor whether the entered Minecraft username belongs to a chief/owner of a major guild, and (if so) surfaces the four contact-role checkboxes.
 3. **Live code display** — as the user ticks roles, the page recomputes a 4-bit integer over those roles and shows the resulting `HALL<NN>` code to type in Minecraft. The digits are zero-padded to two so the code matches the six-character shape of a dazebot account-link code; `static/js/request_code.js` mirrors `mc_command.format_code` in Hall-Monitor.
 
 The site never submits an invite request itself. The Discord invite is issued at MC-time by Hall-Monitor after the user types the command on `verify.wynnvets.org`.

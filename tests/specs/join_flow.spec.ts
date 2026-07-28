@@ -78,14 +78,14 @@ test("/join lookup 404 tells the user the username wasn't found", async ({ page 
   await expect(page.locator("#role-picker")).not.toBeVisible();
 });
 
-test("/join lookup shows the not-notable reason distinctly", async ({ page }) => {
+test("/join lookup shows the not-major reason distinctly", async ({ page }) => {
   await page.route("**/api/join/lookup*", (route) =>
     route.fulfill({
       status: 200,
       contentType: "application/json",
       body: JSON.stringify({
         eligible: false,
-        reason: "guild not notable",
+        reason: "guild not major",
         mc_username: "chief",
         guild_tag: "SMLL",
       }),
@@ -97,6 +97,6 @@ test("/join lookup shows the not-notable reason distinctly", async ({ page }) =>
   await page.getByRole("button", { name: /check eligibility/i }).click();
 
   await expect(page.locator("#lookup-result")).toContainText("SMLL");
-  await expect(page.locator("#lookup-result")).toContainText("isn't currently a notable guild");
+  await expect(page.locator("#lookup-result")).toContainText("isn't currently a major guild");
   await expect(page.locator("#role-picker")).not.toBeVisible();
 });

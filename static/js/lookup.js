@@ -29,14 +29,14 @@ document.addEventListener("DOMContentLoaded", () => {
       if (!data.eligible) {
         // Each reason gets its own sentence. The fallback below is only
         // right for "not chief or owner" — telling an expelled guild's
-        // chief they don't lead a notable guild is both wrong and
+        // chief they don't lead a major guild is both wrong and
         // maddening, since they do.
         if (data.reason === "guild expelled" && data.guild_tag) {
           result.textContent = `${data.guild_tag} has been removed from the Guild Hall, so its representatives can't join. If you think that's a mistake, a Hall monitor can look at it.`;
-        } else if (data.reason === "guild not notable" && data.guild_tag) {
-          result.textContent = `You lead ${data.guild_tag}, but ${data.guild_tag} isn't currently a notable guild.`;
+        } else if (data.reason === "guild not major" && data.guild_tag) {
+          result.textContent = `You lead ${data.guild_tag}, but ${data.guild_tag} isn't currently a major guild.`;
         } else {
-          result.textContent = "You're not currently chief or owner of a notable guild.";
+          result.textContent = "You're not currently chief or owner of a major guild.";
         }
         return;
       }
