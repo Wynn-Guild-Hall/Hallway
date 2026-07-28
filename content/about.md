@@ -32,7 +32,7 @@ Each role is held by one person at a time. Claiming a role someone else currentl
 
 ## How eligibility is checked
 
-Elgibility is determined through the Wynn API: simply be a chief of your guild,
+Eligibility is determined through the Wynn API: simply be a chief of your guild,
 verify it automatically, and you are in!
 
 "Major guild" is itself decided automatically based on various stat indicators from those same leaderboards.
