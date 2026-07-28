@@ -17,6 +17,16 @@ Multi-stage Dockerfile:
 - **Builder** — Hugo compiles the site (`hugo --minify`) into `/out`. The Blowfish theme is vendored via the `themes/blowfish` git submodule, pinned to a tag.
 - **Runtime** — nginx serves `/out` on port 80.
 
+The builder stage asserts two things before the image is worth building, because
+neither failure announces itself. Hugo treats a **missing theme as a warning**,
+not an error: given an empty `themes/blowfish` — what a clone whose submodule was
+never checked out looks like — it exits 0 and emits a tree containing static
+files and no `index.html`. nginx then fills the gap with its own "Welcome to
+nginx!" page, so the deploy reports success while the site is gone. The guards
+are `test -f themes/blowfish/theme.toml` before the build and
+`test -f /out/index.html` after it; the second is the general invariant and
+catches this class of failure whatever its cause.
+
 Content is authored in Markdown under `content/`; site config lives in
 `config/_default/`, split the way Blowfish splits its own so theme upgrades can
 be diffed file-for-file.

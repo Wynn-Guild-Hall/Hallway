@@ -23,6 +23,7 @@ Public website for the Wynncraft Guild Hall at [hall.wynnvets.org](https://hall.
 ## Don't
 
 - Don't edit files inside `themes/blowfish/` — override at `layouts/` instead so `git submodule update` stays clean.
+- Don't assume a green Hugo build means a working site. Hugo treats a **missing theme as a warning**: with an empty `themes/blowfish` it exits 0 and emits no `index.html`, and nginx then serves its own "Welcome to nginx!" page. The Dockerfile guards against exactly this — don't remove those two `test -f` checks. On a server, the cause is a clone that needs `git submodule update --init --recursive`.
 - Don't reach for Tailwind utility classes in our own markup. Blowfish ships a **precompiled** `main.css`; a class the theme doesn't already use isn't in the bundle and will silently do nothing. Write plain CSS in `assets/css/custom.css`.
 - Don't write `rgb(var(--color-x) / 0.5)`. The scheme triplets are comma-separated, so that's invalid CSS and the entire declaration is dropped — with no build error. Use `rgba(var(--color-x), 0.5)`.
 - Don't change the bit ordering in `request_code.js` without updating `role_bits.py` in Hall-Monitor first — they must stay in sync.
