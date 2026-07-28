@@ -24,40 +24,26 @@ hold more than one, and a guild does not have to fill all of them:
 | Role | Speaks for |
 |------|------------|
 | **Ownership Contact** | The guild as a whole |
-| **Warring Contact** | The guild's war effort |
+| **Warring Contact** | The guild's territory claims and wars |
 | **Housing Contact** | The guild's housing and building projects |
 | **Events Contact** | The guild's events and community activities |
 
-Each role is held by one person at a time. Claiming a role someone else
-currently holds transfers it to you, and the Hall warns you before that happens.
-Because the Hall is a room of guild representatives, a representative who ends
-up holding no contact roles at all leaves it.
+Each role is held by one person at a time. Claiming a role someone else currently holds transfers it to you, and the Hall warns you before that happens.
 
 ## How eligibility is checked
 
-Eligibility is not an application you submit and wait on. The Hall reads
-Wynncraft's own API: if you are listed as a **chief or owner** of a guild that
-currently counts as a **major guild**, you are eligible.
+Elgibility is determined through the Wynn API: simply be a chief of your guild,
+verify it automatically, and you are in!
 
-"Major guild" is itself decided automatically, from public leaderboards and the
-live territory map — guild level, war count, season placements, raid standings,
-average online, and sustained territory control. No single one of those is
-decisive on its own. Hall monitors can grant a guild major status by hand when
-the automatic answer is wrong, and can remove a guild from the Hall entirely.
+"Major guild" is itself decided automatically based on various stat indicators from those same leaderboards.
+These indicators are periodically debated and adjusted, but generally result in about 40 guilds being selected.
 
 ## How joining works
 
-Your Minecraft account has to be shown to be yours, so the last step happens
-in-game rather than in a browser:
+After verifying you own a wynn chief account (i.e. authenticating via a server), you will be sent a single-use invite.
+Joining that invite will automatically add you to the discord, assign your colours and roles, etc.
 
-1. Enter your username on the [Join](/join/) page to check eligibility.
-2. Tick the contact roles you want. The page shows you a short code.
-3. Join `verify.wynnvets.org` in Minecraft and type that code in chat.
-4. The Hall re-checks your eligibility and hands you a single-use Discord
-   invite.
-
-The Hall never asks for a password, and there is no account to create — joining
-the Minecraft server as your account is the proof.
+The Hall never asks for a password, and there is no account to create — authenticating a server handshake as a chief is proof enough.
 
 ## Ready?
 
