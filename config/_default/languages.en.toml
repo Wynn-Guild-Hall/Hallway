@@ -14,7 +14,7 @@ title = "Wynncraft Guild Hall"
   # full size via layouts/partials/home/background.html.
   logo = "img/guilds_wynn.png"
 
-  description = "A meeting place for representatives of major Wynncraft guilds."
+  description = "An unofficial meeting place for ownership of major Wynncraft guilds to discuss, collaborate, and coordinate"
   copyright = "The Wynncraft Guild Hall"
 
 [params.author]

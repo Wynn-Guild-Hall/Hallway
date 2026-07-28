@@ -16,6 +16,12 @@ enableA11y = true
 
 disableImageOptimization = false
 
+# The image link previews use (Open Graph / Discord). None of our pages carry a
+# featured image, so this is what every page falls back to. It's the crest on
+# the site's dark background rather than the bare PNG: the crest has a
+# transparent surround, and a solid card renders predictably wherever it lands.
+defaultSocialImage = "img/social-card.png"
+
 [header]
   # The homepage hero runs full-bleed behind the header, so the header needs to
   # be transparent-until-scrolled rather than a solid bar sitting on top of it.

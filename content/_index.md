@@ -1,6 +1,6 @@
 ---
 title: "Wynncraft Guild Hall"
-description: "A meeting place for representatives of major Wynncraft guilds."
+description: "An unofficial meeting place for ownership of major Wynncraft guilds to discuss, collaborate, and coordinate"
 ---
 
 The Guild Hall is an automated venue that assembles major guilds' ownership in one place!

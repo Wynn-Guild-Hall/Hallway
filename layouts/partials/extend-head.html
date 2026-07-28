@@ -1,0 +1,16 @@
+{{/* Discord colours a link embed's left border from <meta name="theme-color">.
+
+     Blowfish emits that tag with no content at all and fills it in at runtime
+     from appearance.js, matching it to whichever appearance the visitor is in.
+     Crawlers don't run JavaScript, so Discordbot only ever saw the empty
+     placeholder and fell back to its default grey. This supplies a real value.
+
+     There are consequently two theme-color tags in the output, and ours is the
+     only one carrying a content attribute. If Discord ever renders the border
+     grey again, that is the thing to check — the fix would be to override
+     partials/head.html outright so the placeholder never ships.
+
+     The colour is primary-500 from assets/css/schemes/wynn.css, the crest's
+     periwinkle. It's the same accent as the site's buttons and links, and it
+     holds up against Discord's dark chrome. */}}
+<meta name="theme-color" content="#8078CF">
