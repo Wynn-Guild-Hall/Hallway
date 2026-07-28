@@ -1,41 +1,74 @@
 {{ define "main" }}
-  {{/* Custom /join layout — Ananke's default single.html doesn't ship the form
-       markup we need. Everything else on the site uses Ananke's built-in layouts
-       unchanged; only this page is overridden. */}}
-  <section class="pv3 pv4-ns ph3 ph4-ns ph5-l">
-    <h1 class="f2 f-headline-ns fw2 georgia mid-gray">{{ .Title }}</h1>
-    <div class="lh-copy">
+  {{/* Custom /join layout — Blowfish's default single.html has no concept of
+       the eligibility form, so this page overrides it. Everything else on the
+       site uses Blowfish's built-in layouts unchanged.
+
+       Hidden state is the `hidden` attribute rather than a utility class, so
+       the markup degrades correctly with CSS off and the JS in static/js/ only
+       has to toggle a boolean. */}}
+  <article class="hall-join">
+    <header>
+      <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
+        {{ .Title | emojify }}
+      </h1>
+    </header>
+
+    <section class="prose dark:prose-invert mt-4">
       {{ .Content }}
+    </section>
+
+    <div class="hall-panel">
+      <form id="lookup-form" novalidate>
+        <label class="hall-field-label" for="username">Minecraft username</label>
+        <div class="hall-field-row">
+          <input
+            id="username"
+            name="username"
+            class="hall-input"
+            type="text"
+            autocomplete="off"
+            autocapitalize="none"
+            spellcheck="false"
+            placeholder="e.g. wenweia"
+            required>
+          <button class="hall-btn hall-btn-primary" type="submit">Check eligibility</button>
+        </div>
+      </form>
+
+      {{/* aria-live so the lookup verdict is announced, not just painted. */}}
+      <p id="lookup-result" class="hall-result" role="status" aria-live="polite"></p>
     </div>
 
-    <form id="lookup-form" class="mt4">
-      <label for="username" class="db mb2 fw6">Minecraft username</label>
-      <input id="username" name="username" type="text" required
-             class="input-reset ba b--black-20 pa2 mb2 db w-100 measure" />
-      <button type="submit"
-              class="f6 link dim br1 ph3 pv2 mb2 dib white bg-dark-gray b--none">
-        Check eligibility
-      </button>
-    </form>
+    <fieldset id="role-picker" class="hall-roles" hidden>
+      <legend class="hall-roles-legend">Which contact role(s) do you want?</legend>
+      <label class="hall-role">
+        <input type="checkbox" name="role" value="ownership" data-bit="3">
+        <span>Ownership Contact</span>
+      </label>
+      <label class="hall-role">
+        <input type="checkbox" name="role" value="warring" data-bit="2">
+        <span>Warring Contact</span>
+      </label>
+      <label class="hall-role">
+        <input type="checkbox" name="role" value="housing" data-bit="1">
+        <span>Housing Contact</span>
+      </label>
+      <label class="hall-role">
+        <input type="checkbox" name="role" value="events" data-bit="0">
+        <span>Events Contact</span>
+      </label>
 
-    <div id="lookup-result" class="mt3"></div>
-
-    <fieldset id="role-picker" class="dn mt4 pa0 bn">
-      <legend class="fw6 mb2">Which contact role(s) do you want?</legend>
-      <label class="db mb1"><input type="checkbox" name="role" value="ownership" data-bit="3"> Ownership Contact</label>
-      <label class="db mb1"><input type="checkbox" name="role" value="warring" data-bit="2"> Warring Contact</label>
-      <label class="db mb1"><input type="checkbox" name="role" value="housing" data-bit="1"> Housing Contact</label>
-      <label class="db mb1"><input type="checkbox" name="role" value="events" data-bit="0"> Events Contact</label>
+      <div id="conflict-warnings" class="hall-warnings" role="status" aria-live="polite"></div>
     </fieldset>
 
-    <div id="conflict-warnings" class="mt3"></div>
-
-    <div id="code-display" class="dn mt4 pa3 bg-light-gray br2">
-      <p class="mb2">To finish, join <code>verify.wynnvets.org</code> in Minecraft and type:</p>
-      <p class="f3 fw6"><code id="code-line">HALL00</code></p>
+    <div id="code-display" class="hall-code" hidden>
+      <p class="hall-code-intro">
+        To finish, join <code>verify.wynnvets.org</code> in Minecraft and type:
+      </p>
+      <p class="hall-code-value" id="code-line">HALL00</p>
     </div>
-  </section>
+  </article>
 
-  <script src="/js/lookup.js" defer></script>
-  <script src="/js/request_code.js" defer></script>
+  <script src="{{ "js/lookup.js" | relURL }}" defer></script>
+  <script src="{{ "js/request_code.js" | relURL }}" defer></script>
 {{ end }}

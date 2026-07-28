@@ -28,7 +28,7 @@ document.addEventListener("DOMContentLoaded", () => {
         warnings.push(`${lookup.guild_tag}'s ${role} contact is currently ${holder} — verifying will take that role from them.`);
       }
     });
-    conflictBox.innerHTML = warnings.map((w) => `<p class="orange">${w}</p>`).join("");
+    conflictBox.innerHTML = warnings.map((w) => `<p class="hall-warning">${w}</p>`).join("");
   };
 
   picker.addEventListener("change", recompute);

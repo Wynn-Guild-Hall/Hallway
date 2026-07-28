@@ -1,0 +1,82 @@
+{{/* Homepage hero — override of Blowfish's partials/home/background.html.
+
+     The theme's version is built for a personal site: it renders the configured
+     author as a circular avatar, then a row of social links, then a list of
+     recent articles. We keep its background-image mechanics verbatim (the fixed
+     full-bleed <img> plus the two gradient scrims that fade it into the page
+     background) and replace the content block, because:
+
+       - the crest is a hexagon, and `rounded-full` clips its corners off;
+       - this is an organisation, not a person, so there is no author to show;
+       - the page's job is to route people to /join, so it needs call-to-action
+         buttons the theme has no concept of.
+
+     Presentation for the content block lives in assets/css/custom.css under
+     .hall-hero-*, NOT in Tailwind utilities: Blowfish ships a *precompiled*
+     main.css, so any utility class the theme doesn't already use itself would
+     resolve to nothing here. Classes below that do come from Tailwind are ones
+     the theme's own partial already uses, so they are guaranteed present. */}}
+
+<article class="prose dark:prose-invert max-w-full">
+  <div class="relative">
+    <div class="mx-auto max-w-7xl p-0">
+      <div class="relative sm:overflow-hidden">
+        {{/* Background image, fixed behind the page and scrimmed into the body
+             colour at the bottom so text stays legible over the sunset. */}}
+        <div class="fixed inset-x-0 top-0 -z-10">
+          {{ $homepageImage := "" }}
+          {{ with .Site.Params.homepage.homepageImage }}
+            {{ $homepageImage = resources.Get . }}
+          {{ end }}
+          {{ with .Site.Params.defaultBackgroundImage }}
+            {{ if not $homepageImage }}{{ $homepageImage = resources.Get . }}{{ end }}
+          {{ end }}
+          {{ with $homepageImage }}
+            <img
+              id="background-image"
+              class="hall-hero-bg mt-0 mr-0 mb-0 ml-0 h-[1000px] w-full object-cover"
+              src="{{ .RelPermalink }}"
+              width="{{ .Width }}"
+              height="{{ .Height }}"
+              role="presentation">
+            {{/* One scrim instead of the theme's two. Theirs stack a gradient
+                 and a flat 60%-opacity wash, which between them leave the
+                 screenshot barely legible as a picture. This one is tuned per
+                 appearance in custom.css: dark mode can afford to show most of
+                 the photo behind light text, light mode needs a heavier veil
+                 because the title is dark and the build is not. */}}
+            <div class="hall-hero-scrim"></div>
+          {{ end }}
+        </div>
+
+        <div class="hall-hero">
+          {{ with resources.Get (.Site.Params.Author.image | default .Site.Params.logo) }}
+            {{ $crest := . }}
+            {{ if not (or $.Site.Params.disableImageOptimization (eq .MediaType.SubType "svg")) }}
+              {{ $crest = .Resize "352x webp q90" }}
+            {{ end }}
+            <img
+              class="hall-hero-crest"
+              src="{{ $crest.RelPermalink }}"
+              width="176"
+              height="176"
+              alt="{{ $.Site.Title }}">
+          {{ end }}
+
+          <h1 class="hall-hero-title">{{ .Site.Title | emojify }}</h1>
+
+          {{ with .Site.Params.Author.headline | default .Site.Params.description }}
+            <p class="hall-hero-tagline">{{ . | markdownify }}</p>
+          {{ end }}
+
+          <div class="hall-hero-actions">
+            <a class="hall-btn hall-btn-primary" href="{{ "join/" | relURL }}">Join the Hall</a>
+            <a class="hall-btn hall-btn-ghost" href="{{ "about/" | relURL }}">What is this?</a>
+          </div>
+
+          <section class="hall-hero-content prose dark:prose-invert">{{ .Content }}</section>
+        </div>
+      </div>
+    </div>
+  </div>
+</article>

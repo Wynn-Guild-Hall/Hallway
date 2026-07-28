@@ -1,0 +1,11 @@
+# Header navigation. Ordered by weight, lowest first.
+
+[[main]]
+  name = "About"
+  pageRef = "about"
+  weight = 10
+
+[[main]]
+  name = "Join"
+  pageRef = "join"
+  weight = 20

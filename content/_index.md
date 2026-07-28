@@ -1,15 +1,11 @@
 ---
 title: "Wynncraft Guild Hall"
+description: "A meeting place for representatives of major Wynncraft guilds."
 ---
 
-The **Wynncraft Guild Hall** is a shared clearinghouse within which for ownership of major Wynncraft guilds to discuss and corridinate. It will also be home to some joint projects in the near future including an updated guild recruiting list and build server.
+The Guild Hall is a shared clearinghouse where the owners and chiefs of major
+Wynncraft guilds can talk to each other directly — about wars, housing, events,
+or anything that spans more than one guild.
 
-Membership in this platform does not imply endorsement of any guild — it exists to make inter-guild communication easier.
-
-## Who's it for?
-
-Founders of major Wynncraft guilds and leaders of those same guilds warring, housing, and/or event efforts.
-
-### How do I join?
-
-If the above describes you, head over to [**/join**](/join/).
+Membership does not imply endorsement of any guild. It exists to make
+inter-guild communication easier.

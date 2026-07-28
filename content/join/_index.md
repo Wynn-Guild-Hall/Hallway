@@ -1,8 +1,13 @@
 ---
 title: "Join the Guild Hall"
+description: "Check whether you're eligible to represent your guild, and get your in-game code."
 layout: "single"
 ---
 
-Enter your Minecraft username below. We'll check whether you're a chief or owner of a major guild via the Wynncraft API and, if so, let you pick which contact roles you want to hold.
+Enter your Minecraft username below. We'll check with the Wynncraft API whether
+you're a chief or owner of a major guild and, if so, let you pick which contact
+roles you want to hold.
 
-You do **not** submit the form — the site will show you a short instruction to type in-game.
+You don't submit anything here — the page gives you a short code to type in
+Minecraft, which is how the Hall confirms the account is yours. New to this?
+[Read how it works first](/about/).

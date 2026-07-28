@@ -18,9 +18,24 @@ const HAPPY_PATH_LOOKUP = {
   },
 };
 
+const NOT_MAJOR_LOOKUP = {
+  eligible: false,
+  reason: "guild not major",
+  mc_username: "chief",
+  guild_tag: "SMLL",
+};
+
 test("homepage renders the Guild Hall intro", async ({ page }) => {
   await page.goto("/");
   await expect(page).toHaveTitle(/Guild Hall/i);
+  await expect(page.getByRole("link", { name: /join the hall/i })).toBeVisible();
+});
+
+test("/about explains representation and links to /join", async ({ page }) => {
+  await page.goto("/about/");
+  await expect(page.getByRole("heading", { name: /about the guild hall/i })).toBeVisible();
+  await expect(page.getByRole("heading", { name: /how representation works/i })).toBeVisible();
+  await expect(page.locator('a[href="/join/"]').first()).toBeVisible();
 });
 
 test("/join lookup happy-path shows the role picker", async ({ page }) => {
@@ -78,17 +93,38 @@ test("/join lookup 404 tells the user the username wasn't found", async ({ page 
   await expect(page.locator("#role-picker")).not.toBeVisible();
 });
 
+// A second lookup has to clear the first one's UI. Otherwise an eligible
+// name followed by an ineligible one leaves the earlier name's role
+// checkboxes and code on screen, attached to a lookup that no longer holds.
+test("an ineligible second lookup clears the first lookup's picker", async ({ page }) => {
+  let payload = HAPPY_PATH_LOOKUP;
+  await page.route("**/api/join/lookup*", (route) =>
+    route.fulfill({ status: 200, contentType: "application/json", body: JSON.stringify(payload) }),
+  );
+
+  await page.goto("/join/");
+  await page.locator("#username").fill("wenweia");
+  await page.getByRole("button", { name: /check eligibility/i }).click();
+  await expect(page.locator("#role-picker")).toBeVisible();
+
+  await page.locator('input[value="ownership"]').check();
+  await expect(page.locator("#code-line")).toHaveText("HALL08");
+
+  payload = NOT_MAJOR_LOOKUP;
+  await page.locator("#username").fill("chief");
+  await page.getByRole("button", { name: /check eligibility/i }).click();
+
+  await expect(page.locator("#lookup-result")).toContainText("isn't currently a major guild");
+  await expect(page.locator("#role-picker")).not.toBeVisible();
+  await expect(page.locator("#code-display")).not.toBeVisible();
+});
+
 test("/join lookup shows the not-major reason distinctly", async ({ page }) => {
   await page.route("**/api/join/lookup*", (route) =>
     route.fulfill({
       status: 200,
       contentType: "application/json",
-      body: JSON.stringify({
-        eligible: false,
-        reason: "guild not major",
-        mc_username: "chief",
-        guild_tag: "SMLL",
-      }),
+      body: JSON.stringify(NOT_MAJOR_LOOKUP),
     }),
   );
 

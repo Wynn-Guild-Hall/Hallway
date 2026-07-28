@@ -1,0 +1,53 @@
+# Blowfish theme options. Full reference:
+#   https://blowfish.page/docs/configuration/#theme-parameters
+# Anything not listed here keeps the theme default.
+
+# "wynn" is our own scheme at assets/css/schemes/wynn.css — the crest palette.
+colorScheme = "wynn"
+
+# The hero photo is a Wynncraft sunset, so dark is the flattering default.
+# autoSwitchAppearance still honours the visitor's OS preference.
+defaultAppearance = "dark"
+autoSwitchAppearance = true
+
+enableSearch = false     # three pages; a search index would be theatre
+enableCodeCopy = false
+enableA11y = true
+
+disableImageOptimization = false
+
+[header]
+  # The homepage hero runs full-bleed behind the header, so the header needs to
+  # be transparent-until-scrolled rather than a solid bar sitting on top of it.
+  layout = "fixed-fill-blur"
+
+[footer]
+  showMenu = false
+  showCopyright = true
+  showThemeAttribution = true
+  showAppearanceSwitcher = true
+  showScrollToTop = true
+
+[homepage]
+  # "background" is the full-screen hero: photo behind a centred crest, title,
+  # and tagline. layouts/partials/home/background.html overrides the theme's
+  # version — see the comment there for what differs.
+  layout = "background"
+  homepageImage = "img/hall.webp"
+  layoutBackgroundBlur = false
+  showRecent = false
+
+[article]
+  showDate = false
+  showAuthor = false
+  showReadingTime = false
+  showWordCount = false
+  showPagination = false
+  showTaxonomies = false
+  showHeadingAnchors = true
+  showTableOfContents = false
+  showBreadcrumbs = false
+
+[list]
+  showHero = false
+  showBreadcrumbs = false

@@ -6,4 +6,4 @@ For more information, see **[hall.wynnvets.org](https://hall.wynnvets.org)**.
 
 ---
 
-Currently hosted on Wynncraft Veterans infrastructure. To move: update `baseURL` in `hugo.toml` and the `proxy_pass` upstream in `nginx.conf`.
+Currently hosted on Wynncraft Veterans infrastructure. To move: update `baseURL` in `config/_default/hugo.toml` and the `proxy_pass` upstream in `nginx.conf`.

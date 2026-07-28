@@ -1,0 +1,483 @@
+/* Site-specific styling. Blowfish concatenates this after its own compiled
+ * main.css (see the theme's partials/head.html), so plain-specificity rules
+ * here win without !important.
+ *
+ * Everything is written as hand-rolled CSS against the scheme's custom
+ * properties rather than as Tailwind utility classes. Blowfish ships a
+ * *precompiled* main.css, so a utility the theme doesn't already use itself
+ * would not exist in the bundle. Colours come from assets/css/schemes/wynn.css,
+ * which means these components follow the palette and dark mode for free.
+ *
+ * Dark mode is a `.dark` class on <html>, set by the theme's appearance.js.
+ */
+
+/* ---------------------------------------------------------------- hero ---- */
+
+.hall-hero {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  text-align: center;
+  /* Fills the first screen without the header bar pushing the crest off it. */
+  min-height: calc(100svh - 5rem);
+  padding: 3rem 0 4rem;
+}
+
+.hall-hero-bg {
+  filter: saturate(1.05);
+}
+
+/* Scrim over the hero photo. Two jobs, in tension: keep the build recognisable,
+ * and keep the title legible on top of it. The bottom stop also fades the photo
+ * into the page background, which is what stops the image's hard bottom edge
+ * from showing on tall viewports.
+ *
+ * The two appearances need genuinely different treatments rather than one
+ * gradient with swapped colours — light text over a dark photo needs far less
+ * help than dark text does, so dark mode keeps a much thinner veil. */
+.hall-hero-scrim {
+  position: absolute;
+  inset: 0;
+  height: 1000px;
+  background:
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 42%,
+      rgba(var(--color-neutral), 0.88) 76%,
+      rgb(var(--color-neutral)) 96%
+    ),
+    linear-gradient(rgba(var(--color-neutral), 0.6), rgba(var(--color-neutral), 0.6));
+}
+
+.dark .hall-hero-scrim {
+  background:
+    linear-gradient(
+      to bottom,
+      transparent 0%,
+      transparent 45%,
+      rgba(var(--color-neutral-800), 0.8) 78%,
+      rgb(var(--color-neutral-800)) 97%
+    ),
+    linear-gradient(
+      rgba(var(--color-neutral-800), 0.4),
+      rgba(var(--color-neutral-800), 0.4)
+    );
+}
+
+.hall-hero-crest {
+  width: 11rem;
+  height: 11rem;
+  margin: 0 0 1.5rem;
+  /* The crest is a hexagon on transparency; a soft shadow lifts it off the
+   * photo without the circular crop the theme's avatar treatment would apply. */
+  filter: drop-shadow(0 0.35rem 0.75rem rgb(0 0 0 / 0.55));
+}
+
+.hall-hero-title {
+  margin: 0;
+  font-size: clamp(2.25rem, 6vw, 3.75rem);
+  font-weight: 800;
+  line-height: 1.1;
+  letter-spacing: -0.02em;
+  color: rgb(var(--color-neutral-900));
+  text-wrap: balance;
+  /* A cream halo, so dark type stays readable over the darker parts of the
+   * build even though the light-mode scrim deliberately isn't opaque. */
+  text-shadow:
+    0 0.06rem 0.9rem rgba(var(--color-neutral), 0.95),
+    0 0 2rem rgba(var(--color-neutral), 0.85);
+}
+
+.hall-hero-tagline {
+  margin: 0.75rem 0 0;
+  max-width: 34ch;
+  font-size: clamp(1.05rem, 2.2vw, 1.35rem);
+  line-height: 1.5;
+  color: rgb(var(--color-neutral-700));
+  text-wrap: balance;
+  text-shadow: 0 0.06rem 0.75rem rgba(var(--color-neutral), 0.95);
+}
+
+.dark .hall-hero-title {
+  color: rgb(var(--color-neutral-50));
+  text-shadow: 0 0.15rem 0.9rem rgb(0 0 0 / 0.6);
+}
+
+.dark .hall-hero-tagline {
+  color: rgb(var(--color-neutral-200));
+  text-shadow: 0 0.1rem 0.6rem rgb(0 0 0 / 0.65);
+}
+
+.hall-hero-actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  justify-content: center;
+  margin-top: 2rem;
+}
+
+.hall-hero-content {
+  margin-top: 3rem;
+  max-width: 60ch;
+}
+
+/* ------------------------------------------------------------- buttons ---- */
+
+.hall-btn {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.6rem 1.4rem;
+  border: 1px solid transparent;
+  border-radius: 0.5rem;
+  font-size: 1rem;
+  font-weight: 600;
+  line-height: 1.4;
+  text-decoration: none;
+  cursor: pointer;
+  transition: background-color 0.15s ease, border-color 0.15s ease,
+    color 0.15s ease, transform 0.15s ease;
+}
+
+.hall-btn:hover {
+  transform: translateY(-1px);
+}
+
+.hall-btn:focus-visible {
+  outline: 2px solid rgb(var(--color-primary-400));
+  outline-offset: 2px;
+}
+
+.hall-btn-primary {
+  background-color: rgb(var(--color-primary-600));
+  color: rgb(var(--color-neutral-50));
+}
+
+.hall-btn-primary:hover {
+  background-color: rgb(var(--color-primary-700));
+}
+
+.dark .hall-btn-primary {
+  background-color: rgb(var(--color-primary-500));
+  color: rgb(var(--color-neutral-900));
+}
+
+.dark .hall-btn-primary:hover {
+  background-color: rgb(var(--color-primary-400));
+}
+
+.hall-btn-ghost {
+  border-color: rgb(var(--color-neutral-400));
+  background-color: rgba(var(--color-neutral), 0.7);
+  color: rgb(var(--color-neutral-800));
+  backdrop-filter: blur(6px);
+}
+
+.hall-btn-ghost:hover {
+  border-color: rgb(var(--color-primary-500));
+  color: rgb(var(--color-primary-700));
+}
+
+.dark .hall-btn-ghost {
+  border-color: rgb(var(--color-neutral-400));
+  background-color: rgba(var(--color-neutral-900), 0.45);
+  color: rgb(var(--color-neutral-100));
+}
+
+.dark .hall-btn-ghost:hover {
+  border-color: rgb(var(--color-primary-400));
+  color: rgb(var(--color-primary-200));
+}
+
+.hall-btn[disabled],
+.hall-btn[aria-disabled="true"] {
+  opacity: 0.55;
+  cursor: not-allowed;
+  transform: none;
+}
+
+/* ---------------------------------------------------------- /join page ---- */
+
+.hall-join {
+  max-width: 42rem;
+}
+
+/* .prose caps itself at 65ch, which lands narrower than the form panel below
+ * it and makes the intro copy look indented rather than aligned. The column
+ * width is already set by .hall-join. */
+.hall-join .prose {
+  max-width: none;
+}
+
+/* A panel to sit the form on, so the input group reads as one unit rather than
+ * as loose controls floating in the article body. */
+.hall-panel {
+  margin-top: 2rem;
+  padding: 1.5rem;
+  border: 1px solid rgb(var(--color-neutral-200));
+  border-radius: 0.75rem;
+  background-color: rgb(var(--color-neutral-50));
+}
+
+.dark .hall-panel {
+  border-color: rgb(var(--color-neutral-700));
+  background-color: rgba(var(--color-neutral-900), 0.5);
+}
+
+.hall-field-label {
+  display: block;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  letter-spacing: 0.01em;
+  color: rgb(var(--color-neutral-700));
+}
+
+.dark .hall-field-label {
+  color: rgb(var(--color-neutral-300));
+}
+
+.hall-field-row {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+}
+
+.hall-input {
+  flex: 1 1 14rem;
+  min-width: 0;
+  padding: 0.6rem 0.85rem;
+  border: 1px solid rgb(var(--color-neutral-300));
+  border-radius: 0.5rem;
+  background-color: rgb(var(--color-neutral));
+  color: rgb(var(--color-neutral-900));
+  font-size: 1rem;
+  line-height: 1.4;
+}
+
+.hall-input::placeholder {
+  color: rgb(var(--color-neutral-400));
+}
+
+.hall-input:focus {
+  outline: 2px solid rgb(var(--color-primary-500));
+  outline-offset: 1px;
+  border-color: transparent;
+}
+
+.dark .hall-input {
+  border-color: rgb(var(--color-neutral-600));
+  background-color: rgb(var(--color-neutral-800));
+  color: rgb(var(--color-neutral-50));
+}
+
+/* Lookup feedback. .is-error / .is-ok are set by static/js/lookup.js. */
+.hall-result {
+  margin-top: 1rem;
+  font-size: 0.98rem;
+  line-height: 1.5;
+  color: rgb(var(--color-neutral-700));
+}
+
+.dark .hall-result {
+  color: rgb(var(--color-neutral-300));
+}
+
+.hall-result:empty {
+  display: none;
+}
+
+.hall-result.is-error {
+  color: rgb(var(--color-secondary-700));
+}
+
+.dark .hall-result.is-error {
+  color: rgb(var(--color-secondary-300));
+}
+
+.hall-result.is-ok {
+  color: rgb(var(--color-primary-700));
+  font-weight: 600;
+}
+
+.dark .hall-result.is-ok {
+  color: rgb(var(--color-primary-300));
+}
+
+/* --------------------------------------------------------- role picker ---- */
+
+.hall-roles {
+  margin: 0;
+  padding: 0;
+  border: 0;
+}
+
+.hall-roles[hidden] {
+  display: none;
+}
+
+.hall-roles-legend {
+  padding: 0;
+  margin-bottom: 0.75rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgb(var(--color-neutral-700));
+}
+
+.dark .hall-roles-legend {
+  color: rgb(var(--color-neutral-300));
+}
+
+.hall-role {
+  display: flex;
+  align-items: center;
+  gap: 0.7rem;
+  padding: 0.7rem 0.9rem;
+  border: 1px solid rgb(var(--color-neutral-200));
+  border-radius: 0.5rem;
+  background-color: rgb(var(--color-neutral));
+  cursor: pointer;
+  transition: border-color 0.15s ease, background-color 0.15s ease;
+}
+
+.hall-role + .hall-role {
+  margin-top: 0.5rem;
+}
+
+.hall-role:hover {
+  border-color: rgb(var(--color-primary-400));
+}
+
+.dark .hall-role {
+  border-color: rgb(var(--color-neutral-700));
+  background-color: rgb(var(--color-neutral-800));
+}
+
+/* Blowfish bundles Tailwind's forms plugin, which sets `appearance: none` on
+ * checkboxes and paints the checked state with `background-color: currentColor`
+ * — so `accent-color` does nothing here and the tick comes out Tailwind blue.
+ * `color` is the knob that actually works. The plugin's rules are wrapped in
+ * :where(), giving them zero specificity, so these plain overrides win. */
+.hall-role input[type="checkbox"] {
+  width: 1.15rem;
+  height: 1.15rem;
+  flex: none;
+  border-radius: 0.25rem;
+  border-color: rgb(var(--color-neutral-400));
+  background-color: rgb(var(--color-neutral));
+  color: rgb(var(--color-primary-600));
+  cursor: pointer;
+}
+
+.dark .hall-role input[type="checkbox"] {
+  border-color: rgb(var(--color-neutral-500));
+  background-color: rgb(var(--color-neutral-700));
+  color: rgb(var(--color-primary-500));
+}
+
+/* The plugin also zeroes the outline and draws a blue ring via box-shadow. */
+.hall-role input[type="checkbox"]:focus-visible {
+  outline: 2px solid rgb(var(--color-primary-500));
+  outline-offset: 2px;
+}
+
+.hall-role:has(input:checked) {
+  border-color: rgb(var(--color-primary-500));
+  background-color: rgb(var(--color-primary-50));
+}
+
+.dark .hall-role:has(input:checked) {
+  border-color: rgb(var(--color-primary-500));
+  background-color: rgba(var(--color-primary-900), 0.55);
+}
+
+/* Warnings that a ticked role is already held by someone else. Red, because
+ * confirming takes the role off whoever currently has it. */
+.hall-warnings {
+  margin-top: 1rem;
+}
+
+.hall-warnings:empty {
+  display: none;
+}
+
+.hall-warning {
+  margin: 0 0 0.5rem;
+  padding: 0.7rem 0.9rem;
+  border-inline-start: 3px solid rgb(var(--color-secondary-500));
+  border-radius: 0.25rem;
+  background-color: rgb(var(--color-secondary-50));
+  color: rgb(var(--color-secondary-800));
+  font-size: 0.93rem;
+  line-height: 1.5;
+}
+
+.dark .hall-warning {
+  background-color: rgba(var(--color-secondary-900), 0.4);
+  color: rgb(var(--color-secondary-100));
+}
+
+/* -------------------------------------------------------- code display ---- */
+
+.hall-code[hidden] {
+  display: none;
+}
+
+.hall-code {
+  margin-top: 1.5rem;
+  padding: 1.25rem;
+  border: 1px dashed rgb(var(--color-primary-400));
+  border-radius: 0.75rem;
+  background-color: rgb(var(--color-primary-50));
+}
+
+.dark .hall-code {
+  border-color: rgb(var(--color-primary-600));
+  background-color: rgba(var(--color-primary-900), 0.35);
+}
+
+.hall-code-intro {
+  margin: 0 0 0.6rem;
+  font-size: 0.95rem;
+  color: rgb(var(--color-neutral-700));
+}
+
+.dark .hall-code-intro {
+  color: rgb(var(--color-neutral-200));
+}
+
+.hall-code-value {
+  display: inline-block;
+  margin: 0;
+  padding: 0.35rem 0.9rem;
+  border-radius: 0.4rem;
+  background-color: rgb(var(--color-neutral-900));
+  color: rgb(var(--color-neutral-50));
+  font-family: ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, monospace;
+  font-size: clamp(1.5rem, 5vw, 2rem);
+  font-weight: 700;
+  letter-spacing: 0.12em;
+  /* One click selects the whole code — it's meant to be copied into chat. */
+  user-select: all;
+  cursor: text;
+}
+
+.dark .hall-code-value {
+  background-color: rgb(var(--color-neutral-900));
+  color: rgb(var(--color-primary-200));
+}
+
+/* ------------------------------------------------------------ a11y/etc ---- */
+
+@media (prefers-reduced-motion: reduce) {
+  .hall-btn,
+  .hall-role {
+    transition: none;
+  }
+
+  .hall-btn:hover {
+    transform: none;
+  }
+}

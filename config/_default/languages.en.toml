@@ -1,0 +1,23 @@
+disabled = false
+locale = "en"
+label = "English"
+weight = 1
+title = "Wynncraft Guild Hall"
+
+[params]
+  displayName = "EN"
+  isoCode = "en"
+  rtl = false
+  dateFormat = "2 January 2006"
+
+  # Crest shown in the header bar. The homepage hero renders the same asset at
+  # full size via layouts/partials/home/background.html.
+  logo = "img/guilds_wynn.png"
+
+  description = "A meeting place for representatives of major Wynncraft guilds."
+  copyright = "The Wynncraft Guild Hall"
+
+[params.author]
+  name = "Wynncraft Guild Hall"
+  image = "img/guilds_wynn.png"
+  headline = "A shared table for the major guilds of Wynncraft."

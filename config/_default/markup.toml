@@ -1,0 +1,11 @@
+# unsafe=true lets content Markdown emit raw HTML. The only authors here are
+# repo committers, so there's no untrusted-input path into the renderer.
+[goldmark.renderer]
+  unsafe = true
+
+[highlight]
+  noClasses = false
+
+[tableOfContents]
+  startLevel = 2
+  endLevel = 3

@@ -1,0 +1,31 @@
+# Core Hugo config. baseURL is overridable at build time via HUGO_BASEURL so the
+# same image can serve prod, staging, and local previews.
+#
+# Blowfish splits its configuration across config/_default/*.toml rather than a
+# single root hugo.toml. We follow that so theme upgrades can be diffed against
+# the theme's own config/_default/ files.
+baseURL = "https://hall.wynnvets.org/"
+theme = "blowfish"
+
+# The language's `locale` lives in languages.en.toml — the top-level
+# `languageCode` key it replaces was deprecated in Hugo 0.158.0.
+
+enableRobotsTXT = true
+enableEmoji = true
+summaryLength = 0
+
+# This is a three-page brochure site, not a blog: no taxonomies, no feeds, and
+# no search index. Dropping them keeps the build output to just the pages we
+# actually serve. Re-enable `outputs.home` RSS/JSON if a blog section is added.
+disableKinds = ["taxonomy", "term", "rss"]
+
+[outputs]
+  home = ["HTML"]
+
+[imaging]
+  anchor = "Center"
+
+[sitemap]
+  changefreq = "monthly"
+  filename = "sitemap.xml"
+  priority = 0.5
