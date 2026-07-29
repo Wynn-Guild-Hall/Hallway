@@ -20,4 +20,4 @@ title = "Wynncraft Guild Hall"
 [params.author]
   name = "Wynncraft Guild Hall"
   image = "img/guilds_wynn.png"
-  headline = "A shared table for the major guilds of Wynncraft."
+  headline = "A system that automatically assembles the leadership of major Wynncraft guilds in one place."
