@@ -12,6 +12,25 @@
 6. `cd tests && npm install && npx playwright test` against a running preview.
 7. Open a PR against `main`.
 
+## Writing content
+
+Pages under `content/` are ordinary Markdown, plus one Discord borrowing:
+
+```markdown
+-# Membership does not imply endorsement of any guild.
+```
+
+A paragraph starting with `-# ` renders as **subtext** — smaller and dimmer —
+the same as it does in Discord. Inline markup inside it works normally. The
+marker has to be the first thing in the paragraph, so put a blank line above
+it; on a later line of an existing paragraph it stays literal. If you want a
+literal `-#` at the start of a paragraph, write `&#45;#`.
+
+This is not Markdown, and Hugo has no paragraph render hook to implement it in,
+so `layouts/partials/subtext.html` rewrites it after rendering. Any new layout
+that prints `.Content` needs to pipe it through that partial, or `-#` will show
+up verbatim on those pages.
+
 ## Commit messages
 
 Prefix each commit with one of `feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, `test:`. Lowercase, colon-space, imperative subject.

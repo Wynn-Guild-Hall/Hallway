@@ -15,6 +15,8 @@ Public website for the Wynncraft Guild Hall at [hall.wynnvets.org](https://hall.
 - `content/` — Markdown pages. `_index.md` is the homepage hero; `about.md`; `join/_index.md`.
 - `layouts/join/single.html` — the /join eligibility form. Selected by `layout: "single"` in that page's front matter.
 - `layouts/partials/home/background.html` — override of Blowfish's hero. Ours keeps the theme's background-image mechanics but drops the author avatar/social-links/recent-articles block, because the crest is a hexagon (the theme's `rounded-full` clips it) and this is an organisation, not a person.
+- `layouts/partials/subtext.html` — rewrites Discord's `-#` subtext marker into `<p class="hall-subtext">`. Runs on rendered HTML because Hugo has no paragraph render hook. Every layout that prints `.Content` pipes it through this.
+- `layouts/_default/single.html` — a verbatim copy of the theme's, one line changed, so ordinary pages get that same rewrite. Re-copy and re-apply on a theme bump; `diff` against the theme file should show only that line and the header comment.
 - `assets/img/hall.webp` — the hero screenshot. `assets/img/guilds_wynn.png` — the crest, used as header logo and as the source for every favicon in `static/`.
 - `assets/css/schemes/wynn.css` — the palette, sampled from the crest. `assets/css/custom.css` — everything else.
 - `static/js/lookup.js` + `static/js/request_code.js` — the /join page's client-side logic.
@@ -26,5 +28,6 @@ Public website for the Wynncraft Guild Hall at [hall.wynnvets.org](https://hall.
 - Don't assume a green Hugo build means a working site. Hugo treats a **missing theme as a warning**: with an empty `themes/blowfish` it exits 0 and emits no `index.html`, and nginx then serves its own "Welcome to nginx!" page. The Dockerfile guards against exactly this — don't remove those two `test -f` checks. On a server, the cause is a clone that needs `git submodule update --init --recursive`.
 - Don't reach for Tailwind utility classes in our own markup. Blowfish ships a **precompiled** `main.css`; a class the theme doesn't already use isn't in the bundle and will silently do nothing. Write plain CSS in `assets/css/custom.css`.
 - Don't write `rgb(var(--color-x) / 0.5)`. The scheme triplets are comma-separated, so that's invalid CSS and the entire declaration is dropped — with no build error. Use `rgba(var(--color-x), 0.5)`.
+- Don't add a `{{ .Content }}` to a layout without piping it through `partial "subtext.html"`. It won't error — the page just renders `-#` markers as literal text on that one layout, which is exactly the inconsistency the partial exists to avoid.
 - Don't change the bit ordering in `request_code.js` without updating `role_bits.py` in Hall-Monitor first — they must stay in sync.
 - Don't add a Node/JS runtime backend. Static files + reverse-proxy is enough.

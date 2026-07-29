@@ -91,7 +91,9 @@
             </nav>
           </div>
 
-          <section class="hall-hero-content prose dark:prose-invert">{{ .Content }}</section>
+          {{/* Piped through subtext.html so Discord's `-#` marker renders as
+               subtext rather than as two literal characters. */}}
+          <section class="hall-hero-content prose dark:prose-invert">{{ partial "subtext.html" .Content }}</section>
         </div>
       </div>
     </div>

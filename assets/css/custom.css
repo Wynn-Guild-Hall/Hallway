@@ -156,6 +156,29 @@
   max-width: 60ch;
 }
 
+/* ------------------------------------------------------------- subtext ---- */
+
+/* Discord's `-#` subtext marker, turned into this class by
+ * layouts/partials/subtext.html. Same job it has in Discord: an aside or a
+ * disclaimer, present but stepped back from the copy around it.
+ *
+ * Sized in `em` rather than `rem` so it stays proportional to its context —
+ * the hero sets a larger body size than an article does, and subtext should
+ * read as "smaller than this text", not as one fixed size everywhere.
+ *
+ * These win over Tailwind Typography's `.prose :where(p)` on source order,
+ * not specificity: both selectors weigh (0,1,0) — `:where()` contributes
+ * nothing — and custom.css is concatenated after the theme's main.css. */
+.hall-subtext {
+  font-size: 0.8em;
+  line-height: 1.5;
+  color: rgb(var(--color-neutral-500));
+}
+
+.dark .hall-subtext {
+  color: rgb(var(--color-neutral-400));
+}
+
 /* ------------------------------------------------------------- buttons ---- */
 
 .hall-btn {

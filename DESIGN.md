@@ -49,7 +49,7 @@ Two consequences of the precompiled CSS shape everything under `assets/css/`:
 
 ### Layout overrides
 
-Only two, both for reasons the theme can't be configured around:
+Three, each for a reason the theme can't be configured around:
 
 - `layouts/join/single.html` — the eligibility form. No theme layout has a
   concept of it.
@@ -59,8 +59,38 @@ Only two, both for reasons the theme can't be configured around:
   and replaces the content block, because the crest is a hexagon that
   `rounded-full` would clip, there is no author, and the page's job is to route
   people to `/join`.
+- `layouts/_default/single.html` — a verbatim copy of the theme's file with one
+  line changed, for the `-#` subtext support described below.
 
 Every other page uses Blowfish's built-in layouts unchanged.
+
+### Discord-style `-#` subtext
+
+Content here is written by people who spend their day in Discord, so the site
+supports Discord's subtext marker: a paragraph opening with `-# ` renders
+smaller and dimmer, for asides and disclaimers.
+
+Nothing in markdown means that, and it cannot be added at parse time — Hugo's
+render hooks cover links, images, headings, blockquotes, code blocks, tables
+and passthroughs, and a paragraph is none of those, so Goldmark hands the
+marker through as literal text. Teaching Goldmark the syntax would mean a
+custom Hugo binary, which would cost this build its single-binary,
+network-free property. So the rewrite happens one step later, in
+`layouts/partials/subtext.html`, which takes rendered content HTML and turns
+paragraphs that open with the marker into `<p class="hall-subtext">`. Running
+after rendering is what lets bold, links and emoji work inside a subtext line.
+
+The cost is that the partial has to be reached from every layout that prints
+`.Content`. Two of those are ours. The third is Blowfish's `_default/single.html`,
+which renders every ordinary page (`/about`, `/what`, `/why`, `/who`, `/how`),
+and is therefore copied into `layouts/` with that one line changed. A
+whole-file copy for a one-line diff is a poor trade in isolation and a good one
+here: a syntax that worked on the homepage but not on the pages beside it would
+be a worse trap than a file to re-sync on theme bumps. The header comment on
+the copy gives the `diff` command that checks it.
+
+Styling is `.hall-subtext` in `custom.css`, sized in `em` so subtext stays
+proportional to the context it appears in.
 
 ### Assets
 

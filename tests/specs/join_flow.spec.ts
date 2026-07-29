@@ -31,6 +31,17 @@ test("homepage renders the Guild Hall intro", async ({ page }) => {
   await expect(page.getByRole("link", { name: /join the hall/i })).toBeVisible();
 });
 
+// Discord's `-#` subtext marker is not markdown — layouts/partials/subtext.html
+// rewrites it after rendering. The failure mode if that stops running is quiet:
+// the line still shows, just with a literal `-#` glued to the front of it.
+test("homepage renders the `-#` disclaimer as subtext, not as literal text", async ({ page }) => {
+  await page.goto("/");
+  const subtext = page.locator("p.hall-subtext").filter({ hasText: /Membership does not imply/i });
+  await expect(subtext).toBeVisible();
+  await expect(subtext).not.toContainText("-#");
+  await expect(page.locator("body")).not.toContainText("-#");
+});
+
 test("/about explains representation and links to /join", async ({ page }) => {
   await page.goto("/about/");
   await expect(page.getByRole("heading", { name: /about the guild hall/i })).toBeVisible();

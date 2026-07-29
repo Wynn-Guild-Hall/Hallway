@@ -14,7 +14,8 @@
     </header>
 
     <section class="prose dark:prose-invert mt-4">
-      {{ .Content }}
+      {{/* subtext.html rewrites Discord's `-#` marker; see that partial. */}}
+      {{ partial "subtext.html" .Content }}
     </section>
 
     <div class="hall-panel">

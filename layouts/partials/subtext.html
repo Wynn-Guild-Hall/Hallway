@@ -1,0 +1,44 @@
+{{/* Discord-style `-#` subtext.
+
+     Discord renders a line prefixed with `-# ` as "subtext": smaller and
+     dimmer than body copy, for asides and disclaimers. Markdown has no such
+     construct, so Goldmark passes the marker straight through as literal text
+     — `-# Membership does not imply…` renders as an ordinary paragraph with a
+     visible `-#` on the front. This partial rewrites those paragraphs: one
+     opening with the marker becomes <p class="hall-subtext">, with the marker
+     stripped from every line it holds.
+
+     It works on rendered HTML rather than during markdown rendering because
+     Hugo has no paragraph render hook. The seven it does support (link, image,
+     heading, blockquote, code block, table, passthrough) never see a plain
+     paragraph, and a custom Goldmark extension would mean a custom Hugo
+     binary. Running afterwards costs nothing here and gains something: inline
+     markup inside the line is already rendered, so **bold**, links and emoji
+     keep working inside subtext.
+
+     Call it anywhere a layout would otherwise print .Content:
+
+       {{ partial "subtext.html" .Content }}
+
+     Presentation lives in assets/css/custom.css under .hall-subtext.
+
+     Two edge cases:
+
+       - The marker has to open the paragraph. A marker on a later line of one
+         CommonMark folds together stays literal, on purpose — splitting a
+         paragraph at that point would cut any inline HTML spanning those lines
+         in half, and the literal `-#` on the page is a clear signal that the
+         author wants a blank line above it.
+       - A paragraph escaped as `\-# …`, wanting a literal marker, has already
+         lost its backslash by the time this runs, so it is indistinguishable
+         from the real thing. Write `&#45;#` for a literal one. */}}
+{{- $html := printf "%s" . -}}
+{{- range $paragraph := findRE `(?s)<p>-#[ \t].*?</p>` $html -}}
+  {{/* Strip the marker from every line, not just the first: a paragraph is
+       one Discord-style run of subtext lines, and CommonMark folds consecutive
+       lines into a single <p>. */}}
+  {{- $inner := $paragraph | strings.TrimPrefix "<p>" | strings.TrimSuffix "</p>" -}}
+  {{- $inner = replaceRE `(?m)^-#[ \t]+` "" $inner -}}
+  {{- $html = replace $html $paragraph (printf `<p class="hall-subtext">%s</p>` $inner) -}}
+{{- end -}}
+{{- $html | safeHTML -}}
