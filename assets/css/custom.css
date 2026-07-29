@@ -75,6 +75,17 @@
   filter: drop-shadow(0 0.35rem 0.75rem rgb(0 0 0 / 0.55));
 }
 
+/* Shrink-to-fit around the title, so the tagline underneath has a width to
+ * match. The title's own width is viewport-dependent (its font-size is a
+ * clamp on vw), which is why this is a wrapper rather than a fixed measure. */
+.hall-hero-heading {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  width: fit-content;
+  max-width: 100%;
+}
+
 .hall-hero-title {
   margin: 0;
   font-size: clamp(2.25rem, 6vw, 3.75rem);
@@ -92,7 +103,14 @@
 
 .hall-hero-tagline {
   margin: 0.75rem 0 0;
-  max-width: 34ch;
+  /* Match the title's width instead of a fixed measure. `width: 0` keeps this
+   * line out of the wrapper's shrink-to-fit sizing — otherwise the unwrapped
+   * sentence, which is far wider than the title, would decide the width for
+   * both — and `min-width: 100%` then stretches it back to whatever the title
+   * settled on. The 34ch measure this replaces broke the sentence over three
+   * lines that ran visibly narrower than the title above them. */
+  width: 0;
+  min-width: 100%;
   font-size: clamp(1.05rem, 2.2vw, 1.35rem);
   line-height: 1.5;
   color: rgb(var(--color-neutral-700));

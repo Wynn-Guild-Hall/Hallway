@@ -63,11 +63,17 @@
               alt="{{ $.Site.Title }}">
           {{ end }}
 
-          <h1 class="hall-hero-title">{{ .Site.Title | emojify }}</h1>
+          {{/* Title and tagline are wrapped together so they can share a width.
+               The wrapper shrinks to fit, and the tagline is kept out of that
+               calculation (see .hall-hero-tagline), so the title alone decides
+               how wide the pair is and the tagline wraps to match it. */}}
+          <div class="hall-hero-heading">
+            <h1 class="hall-hero-title">{{ .Site.Title | emojify }}</h1>
 
-          {{ with .Site.Params.Author.headline | default .Site.Params.description }}
-            <p class="hall-hero-tagline">{{ . | markdownify }}</p>
-          {{ end }}
+            {{ with .Site.Params.Author.headline | default .Site.Params.description }}
+              <p class="hall-hero-tagline">{{ . | markdownify }}</p>
+            {{ end }}
+          </div>
 
           {{/* Two rows, not one: the join CTA owns the first, and the four
                topic pages share the second. Splitting them makes the primary
