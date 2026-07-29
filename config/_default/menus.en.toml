@@ -1,9 +1,39 @@
 # Header navigation. Ordered by weight, lowest first.
+#
+# "About" is both a page and a dropdown. Blowfish's desktop-menu renders a
+# parent that has children as a still-clickable link with a chevron appended,
+# so the overview page stays reachable from the nav while What/Why/Who/How hang
+# beneath it. Children attach by the parent's `identifier`, not its `name`.
 
 [[main]]
+  identifier = "about"
   name = "About"
   pageRef = "about"
   weight = 10
+
+[[main]]
+  parent = "about"
+  name = "What"
+  pageRef = "what"
+  weight = 11
+
+[[main]]
+  parent = "about"
+  name = "Why"
+  pageRef = "why"
+  weight = 12
+
+[[main]]
+  parent = "about"
+  name = "Who"
+  pageRef = "who"
+  weight = 13
+
+[[main]]
+  parent = "about"
+  name = "How"
+  pageRef = "how"
+  weight = 14
 
 [[main]]
   name = "Join"

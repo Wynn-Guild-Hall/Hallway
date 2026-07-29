@@ -110,12 +110,27 @@
   text-shadow: 0 0.1rem 0.6rem rgb(0 0 0 / 0.65);
 }
 
+/* Two rows — the join CTA, then the topic buttons — locked to a common width.
+ *
+ * A single-column grid is what ties them together: the column sizes to whichever
+ * row is intrinsically wider (in practice the four topic buttons plus their
+ * gaps), and both rows then stretch to fill it. So the CTA is exactly as wide as
+ * the row beneath it without either width being hard-coded — relabel a button or
+ * change the gap and the two stay matched. */
 .hall-hero-actions {
-  display: flex;
-  flex-wrap: wrap;
+  display: grid;
   gap: 0.75rem;
   justify-content: center;
   margin-top: 2rem;
+}
+
+/* Four equal columns rather than a flex row, so the buttons divide the width
+ * evenly instead of each sizing to its own label. minmax(0, 1fr) lets them
+ * shrink below their text width on narrow phones instead of overflowing. */
+.hall-hero-links {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: 0.5rem;
 }
 
 .hall-hero-content {
@@ -189,6 +204,21 @@
 .dark .hall-btn-ghost:hover {
   border-color: rgb(var(--color-primary-400));
   color: rgb(var(--color-primary-200));
+}
+
+/* The one call to action: a wider, larger face than the row beneath it, so the
+ * split reads as a hierarchy rather than as five buttons that happened to wrap. */
+.hall-btn-lead {
+  padding: 0.85rem 2.5rem;
+  font-size: 1.125rem;
+}
+
+/* Four one-word labels. Equal widths come from the grid's 1fr columns, not from
+ * a min-width here — the min-width would set a floor the CTA above would then
+ * have to match, and would overflow narrow phones. */
+.hall-btn-compact {
+  padding: 0.45rem 1rem;
+  font-size: 0.95rem;
 }
 
 .hall-btn[disabled],

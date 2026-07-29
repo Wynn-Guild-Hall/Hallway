@@ -69,9 +69,20 @@
             <p class="hall-hero-tagline">{{ . | markdownify }}</p>
           {{ end }}
 
+          {{/* Two rows, not one: the join CTA owns the first, and the four
+               topic pages share the second. Splitting them makes the primary
+               action unambiguous — a single wrapping row of five buttons reads
+               as five equal choices, and at narrow widths breaks wherever it
+               happens to run out of room. */}}
           <div class="hall-hero-actions">
-            <a class="hall-btn hall-btn-primary" href="{{ "join/" | relURL }}">Join the Hall</a>
-            <a class="hall-btn hall-btn-ghost" href="{{ "about/" | relURL }}">What is this?</a>
+            <a class="hall-btn hall-btn-primary hall-btn-lead" href="{{ "join/" | relURL }}">Join The Guild Hall!</a>
+
+            <nav class="hall-hero-links" aria-label="Learn more">
+              <a class="hall-btn hall-btn-ghost hall-btn-compact" href="{{ "what/" | relURL }}">What</a>
+              <a class="hall-btn hall-btn-ghost hall-btn-compact" href="{{ "why/" | relURL }}">Why</a>
+              <a class="hall-btn hall-btn-ghost hall-btn-compact" href="{{ "who/" | relURL }}">Who</a>
+              <a class="hall-btn hall-btn-ghost hall-btn-compact" href="{{ "how/" | relURL }}">How</a>
+            </nav>
           </div>
 
           <section class="hall-hero-content prose dark:prose-invert">{{ .Content }}</section>
