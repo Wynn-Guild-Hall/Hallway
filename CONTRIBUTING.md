@@ -31,6 +31,39 @@ so `layouts/partials/subtext.html` rewrites it after rendering. Any new layout
 that prints `.Content` needs to pipe it through that partial, or `-#` will show
 up verbatim on those pages.
 
+### Icons
+
+By convention icons live on the `/about` hub only, set by `icon:` in a page's
+front matter (see below) — page bodies stay plain Markdown.
+
+If you do want one in a body, a heading takes it as a markdown attribute:
+
+```markdown
+### A Housing Contact {icon="location-dot"}
+```
+
+Anywhere else — a table cell, mid-sentence — use the theme's shortcode,
+`{{%/* icon "signal" */%}}`. Any name in `themes/blowfish/assets/icons/` or in
+our own `assets/icons/` works.
+
+**Don't put the shortcode in a heading.** It renders, but Hugo's placeholder
+token ends up in the generated id, so `## {{%/* icon "list-ol" */%}} Seat
+Allocation` gets `id="hahahugoshortcode7s0hbhb-seat-allocation"` and every link
+to `#seat-allocation` breaks silently. Use the attribute form for headings.
+
+### Adding a page under About
+
+Three things, none of which involve editing `about/_index.md`:
+
+1. Write `content/about/<name>.md` with a `description` — it becomes the page's
+   blurb on the `/about` hub, so make it the question the page answers.
+2. Add `icon: "<name>"` and `back: "about"` to its front matter.
+3. Add it to the About group in `config/_default/menus.en.toml`, with an
+   absolute `pageRef` (`/about/<name>`) and a `weight` that puts it where you
+   want it.
+
+The hub reads that menu group, so the card appears on its own.
+
 ## Commit messages
 
 Prefix each commit with one of `feat:`, `fix:`, `chore:`, `docs:`, `refactor:`, `test:`. Lowercase, colon-space, imperative subject.

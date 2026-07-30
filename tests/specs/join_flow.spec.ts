@@ -42,11 +42,63 @@ test("homepage renders the `-#` disclaimer as subtext, not as literal text", asy
   await expect(page.locator("body")).not.toContainText("-#");
 });
 
-test("/about explains representation and links to /join", async ({ page }) => {
+// /about is a hub, not prose: one card per sub-page, built from the About
+// group in menus.en.toml. A card missing here means the menu and the page have
+// come apart, which is silent — the shortcode just renders one card fewer.
+test("/about offers a card into each of the four sub-pages", async ({ page }) => {
   await page.goto("/about/");
   await expect(page.getByRole("heading", { name: /about the guild hall/i })).toBeVisible();
-  await expect(page.getByRole("heading", { name: /how representation works/i })).toBeVisible();
-  await expect(page.locator('a[href="/join/"]').first()).toBeVisible();
+
+  const cards = page.locator("nav.hall-sections a.hall-section");
+  await expect(cards).toHaveCount(4);
+  for (const [href, label] of [
+    ["/about/what/", "What"],
+    ["/about/why/", "Why"],
+    ["/about/who/", "Who"],
+    ["/about/how/", "How"],
+  ]) {
+    const card = page.locator(`nav.hall-sections a[href="${href}"]`);
+    await expect(card).toBeVisible();
+    await expect(card).toContainText(label);
+  }
+});
+
+test("each sub-page links back up to /about", async ({ page }) => {
+  for (const path of ["/about/what/", "/about/why/", "/about/who/", "/about/how/"]) {
+    await page.goto(path);
+    const back = page.locator("a.hall-back");
+    await expect(back).toBeVisible();
+    await expect(back).toHaveAttribute("href", "/about/");
+  }
+});
+
+// The four pages moved from /<name>/ to /about/<name>/. `aliases:` front matter
+// leaves a redirect stub behind at each old path; without it every link already
+// shared into Discord 404s.
+test("the pre-move URLs still land on the right page", async ({ page }) => {
+  for (const [old, moved] of [
+    ["/what/", "/about/what/"],
+    ["/why/", "/about/why/"],
+    ["/who/", "/about/who/"],
+    ["/how/", "/about/how/"],
+  ]) {
+    await page.goto(old);
+    await page.waitForURL(`**${moved}`);
+  }
+});
+
+// The four anchors the sub-pages link to each other by. Nothing in the build
+// warns when a heading is reworded, so the link just quietly stops scrolling.
+test("the cross-linked heading anchors exist", async ({ page }) => {
+  for (const [path, anchor] of [
+    ["/about/what/", "available-seats"],
+    ["/about/what/", "services"],
+    ["/about/who/", "what-guilds-are-represented"],
+    ["/about/how/", "claiming-your-seat"],
+  ]) {
+    await page.goto(path);
+    await expect(page.locator(`#${anchor}`)).toHaveCount(1);
+  }
 });
 
 test("/join lookup happy-path shows the role picker", async ({ page }) => {

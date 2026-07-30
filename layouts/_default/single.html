@@ -1,22 +1,26 @@
-{{/* Verbatim copy of themes/blowfish/layouts/_default/single.html with exactly
-     one line changed — `{{ .Content }}` in the article body is piped through
-     partials/subtext.html so Discord's `-#` subtext marker renders as subtext
-     instead of as two literal characters. See that partial for why the rewrite
-     can't be a render hook.
+{{/* Copy of themes/blowfish/layouts/_default/single.html with two changes,
+     both marked below:
 
-     A whole-file copy for a one-line change is a poor trade taken deliberately:
+       1. `{{ .Content }}` in the article body is piped through
+          partials/subtext.html, so Discord's `-#` subtext marker renders as
+          subtext instead of as two literal characters. See that partial for
+          why the rewrite can't be a render hook.
+       2. A back link in the header, for pages that name a parent in their
+          `back:` front matter.
+
+     A whole-file copy for two small changes is a poor trade taken deliberately:
      every ordinary page on this site (/about, /what, /why, /who, /how) is
      rendered by this layout, and a markdown syntax that works on the homepage
      but not on those pages is worse than the copy. The homepage and /join use
      layouts we already own, so they call the partial directly.
 
-     On a theme bump, re-copy the upstream file and re-apply the one change:
+     On a theme bump, re-copy the upstream file and re-apply both changes:
 
        diff --strip-trailing-cr \
          themes/blowfish/layouts/_default/single.html \
          layouts/_default/single.html
 
-     should report that line and this comment, and nothing else. The
+     should report those two hunks and this comment, and nothing else. The
      --strip-trailing-cr is for Windows checkouts, where core.autocrlf gives the
      submodule CRLF endings and this file LF; on Linux it changes nothing. */}}
 {{ define "main" }}
@@ -38,6 +42,19 @@
     <header id="single_header" class="mt-5 max-w-prose">
       {{ if .Params.showBreadcrumbs | default (site.Params.article.showBreadcrumbs | default false) }}
         {{ partial "breadcrumbs.html" . }}
+      {{ end }}
+      {{/* Second change from upstream (see the header comment): a back link to
+           whatever page `back:` names in front matter. These pages sit at the
+           site root rather than under /about/, so the theme's breadcrumbs — which
+           follow the content tree — have no parent to show. The label is the
+           target's own LinkTitle, so renaming About renames every link to it. */}}
+      {{ with .Params.back }}
+        {{ with site.GetPage . }}
+          <a class="hall-back" href="{{ .RelPermalink }}">
+            <span class="hall-back-arrow" aria-hidden="true">&larr;</span>
+            {{ .LinkTitle | emojify }}
+          </a>
+        {{ end }}
       {{ end }}
       <h1 class="mt-0 text-4xl font-extrabold text-neutral-900 dark:text-neutral">
         {{ .Title | emojify }}
@@ -68,6 +85,7 @@
       <div class="min-w-0 min-h-0 max-w-fit">
         {{ partial "series/series.html" . }}
         <div class="article-content max-w-prose mb-20">
+          {{/* First change from upstream: was `{{ .Content }}`. */}}
           {{ partial "subtext.html" .Content }}
           {{ $defaultReplyByEmail := site.Params.replyByEmail }}
           {{ $replyByEmail := default $defaultReplyByEmail .Params.replyByEmail }}

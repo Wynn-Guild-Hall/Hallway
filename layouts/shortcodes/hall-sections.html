@@ -1,0 +1,46 @@
+{{/* A card per child of a nav menu entry — icon, label, and the child page's
+     own description.
+
+     Driven off `site.Menus.main` rather than a hand-written list, because the
+     order and the membership of the About group are already declared once in
+     config/_default/menus.en.toml. Adding a fifth sub-page to that file adds a
+     fifth card here, in the right place, with no edit to this file or to the
+     page that calls it.
+
+     Each card's icon comes from the target page's `icon` front matter (any
+     name in themes/blowfish/assets/icons/, or one of our own in
+     assets/icons/); its blurb comes from that page's `description`, so the
+     summary on this page and the one search engines get can't drift apart.
+
+     Called from content as the `hall-sections` shortcode, taking the parent
+     entry's *identifier* — not its name — as its only argument; see the bottom
+     of content/about.md. (Spelling the call out here would need a `*` and a
+     `/` next to each other, which ends this comment.)
+
+     Styling is .hall-sections in assets/css/custom.css. */}}
+{{- $identifier := .Get 0 | default "about" -}}
+{{- $parent := "" -}}
+{{- range site.Menus.main -}}
+  {{- if eq .Identifier $identifier -}}{{- $parent = . -}}{{- end -}}
+{{- end -}}
+{{- if not $parent -}}
+  {{- errorf "hall-sections: no main-menu entry with identifier %q (called from %s)" $identifier .Page.File.Path -}}
+{{- end -}}
+<nav class="hall-sections" aria-label="{{ $parent.Name }}">
+  {{- range $parent.Children -}}
+    {{- with .Page }}
+      <a class="hall-section" href="{{ .RelPermalink }}">
+        {{/* Above the text rather than beside it, in a band of its own: the
+             band is fixed-height in CSS, which is what keeps the four labels
+             on a shared baseline whatever shape the glyphs are. */}}
+        <span class="hall-section-figure" aria-hidden="true">
+          {{- partial "icon.html" (.Params.icon | default "circle-info") -}}
+        </span>
+        <span class="hall-section-label">{{ .LinkTitle | emojify }}</span>
+        {{- with .Description }}
+          <span class="hall-section-blurb">{{ . | emojify }}</span>
+        {{- end }}
+      </a>
+    {{- end -}}
+  {{- end }}
+</nav>

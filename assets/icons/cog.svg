@@ -1,0 +1,8 @@
+<!-- Cog. Drawn for this site rather than taken from the Font Awesome set the
+     rest of themes/blowfish/assets/icons/ comes from, which has no gear.
+     Geometry: 8 teeth, tip r=236, root r=178, bore r=84,
+     on the same 512 grid and currentColor fill as the theme's icons so it
+     sits at the same weight beside them. -->
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 512 512">
+  <path fill="currentColor" fill-rule="evenodd" d="M185.0 92.8L202.9 26.0L309.1 26.0L327.0 92.8L321.2 90.4L381.1 55.9L456.1 130.9L421.6 190.8L419.2 185.0L486.0 202.9L486.0 309.1L419.2 327.0L421.6 321.2L456.1 381.1L381.1 456.1L321.2 421.6L327.0 419.2L309.1 486.0L202.9 486.0L185.0 419.2L190.8 421.6L130.9 456.1L55.9 381.1L90.4 321.2L92.8 327.0L26.0 309.1L26.0 202.9L92.8 185.0L90.4 190.8L55.9 130.9L130.9 55.9L190.8 90.4ZM172.0 256.0a84.0 84.0 0 1 0 168.0 0a84.0 84.0 0 1 0 -168.0 0Z"/>
+</svg>

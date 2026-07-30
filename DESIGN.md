@@ -59,10 +59,76 @@ Three, each for a reason the theme can't be configured around:
   and replaces the content block, because the crest is a hexagon that
   `rounded-full` would clip, there is no author, and the page's job is to route
   people to `/join`.
-- `layouts/_default/single.html` — a verbatim copy of the theme's file with one
-  line changed, for the `-#` subtext support described below.
+- `layouts/_default/single.html` — a copy of the theme's file with two changes:
+  the `-#` subtext support described below, and the `back:` link described in
+  §2.1.
 
 Every other page uses Blowfish's built-in layouts unchanged.
+
+### 2.1 /about as a hub
+
+The explanation of the Hall lives in four pages, one per question: What, Why,
+Who, How. `/about` sits above them as a hub — a card per sub-page carrying its
+icon, its name, and the question it answers — and each sub-page carries a back
+link to it.
+
+The hub had to earn its place, because the homepage hero already has four
+buttons to the same four pages. What it adds is the question: the hero offers
+four one-word labels to someone deciding whether to read at all, and the hub
+offers the same four with a sentence each, to someone who has decided they
+will. Those sentences are the sub-pages' own `description` front matter, so the
+hub and the page can't describe themselves differently.
+
+Both halves are declaration-driven rather than written out:
+
+- The cards come from the About group in `menus.en.toml`, via
+  `layouts/shortcodes/hall-sections.html`. That file already declares which
+  pages hang under About and in what order, so a fifth sub-page added to the
+  nav appears on the hub too, in the right place, with nothing else edited.
+- The back link comes from `back: "about"` in a page's front matter, rendered
+  by `_default/single.html`. Its label is the target's own `linkTitle`, so
+  renaming About renames every link to it.
+
+Each sub-page also sets `icon:`, any name from `themes/blowfish/assets/icons/`
+or our own `assets/icons/`. It draws that page's card here; it puts nothing on
+the page itself.
+
+The four live at `/about/<name>/` as a real Hugo section, so the theme's
+breadcrumbs would work — a single up-link is the deliberate choice over a
+`Home / About / Who` trail, since there is only ever one level to climb. They
+were at the site root until the section existed, and `aliases:` front matter
+leaves a redirect stub at each old `/<name>/` path so links shared before the
+move still land.
+
+`about/_index.md` sets `layout: "single"`, the same trick `/join` uses: without
+it a section page renders through the theme's `list.html`, which would print a
+list of the four children underneath the cards that already list them.
+
+### 2.2 Icons in content
+
+Icons appear on the hub and nowhere else. The sub-pages' bodies are plain
+Markdown, so a page reads in an editor the way it reads rendered.
+`assets/icons/cog.svg` is the one icon of our own; the rest come from the
+theme's set, which has no gear.
+
+The machinery to put one in a page body is kept anyway, because the obvious way
+to do it by hand is broken in a way that doesn't announce itself. Headings take
+an icon as a markdown *attribute*:
+
+```markdown
+### A Housing Contact {icon="location-dot"}
+```
+
+rendered by `_markup/render-heading.html`. Not the `icon` shortcode: Hugo
+replaces a shortcode with a placeholder token *before* markdown runs, and
+Goldmark then builds the heading id from text that still contains it, so
+`## {{< icon >}} Seat Allocation` produced
+`id="hahahugoshortcode7s0hbhb-seat-allocation"`. Four anchors on these pages are
+linked from other pages; that is a live-link break with no build error. Heading
+attributes are stripped before the id is computed.
+
+Elsewhere — table cells, inline — the shortcode is fine, since nothing derives
+an id from those.
 
 ### Discord-style `-#` subtext
 

@@ -269,6 +269,236 @@
   transform: none;
 }
 
+/* ------------------------------------------------- /about section cards ---- */
+
+/* The four doors out of /about, rendered by layouts/shortcodes/hall-sections.html.
+ *
+ * These are not the hero's four buttons a second time. The hero offers four
+ * one-word labels to someone deciding whether to read at all; this offers the
+ * same four with the question each one answers, to someone who has decided
+ * they will. The blurbs are the pages' own `description` front matter, which
+ * is why they're worth the space — they can't drift out of date separately.
+ *
+ * Four columns, each an icon over a heading over a line or two of text. The
+ * icon sits in a fixed-height band rather than being laid out by its own
+ * size, so the four headings share a baseline no matter how tall or wide the
+ * individual glyphs are. */
+/* Columns are capped rather than fractional, and the track group is centred:
+ * at the two-up breakpoint, 1fr columns would leave the pair hugging the left
+ * of a container sized for four. They still shrink below the cap (min 0) when
+ * the container can't fit four at full width. */
+.hall-sections {
+  display: grid;
+  grid-template-columns: repeat(4, minmax(0, 14rem));
+  justify-content: center;
+  gap: 1.5rem 1.25rem;
+  margin: 2.5rem 0;
+}
+
+/* Two-up before one-up: four columns of a wrapped question get narrow fast,
+ * but a single column of four wastes a tablet. */
+@media (max-width: 48rem) {
+  .hall-sections {
+    grid-template-columns: repeat(2, minmax(0, 14rem));
+  }
+}
+
+@media (max-width: 26rem) {
+  .hall-sections {
+    grid-template-columns: minmax(0, 14rem);
+  }
+}
+
+/* The hub is chrome, not prose, so it is not bound by the 65ch measure the
+ * theme puts on article bodies — four columns inside that measure would leave
+ * each one about nine characters wide. Widened here rather than in the layout
+ * because /about's whole body *is* this grid; :has keeps it from touching any
+ * other page rendered by the same template. */
+.article-content:has(> .hall-sections) {
+  max-width: 54rem;
+}
+
+/* Capped and centred in its column rather than filling it. At the two-up
+ * breakpoint a column is over 300px, and a 4:3 frame that wide is a 230px-tall
+ * box holding one small glyph. */
+.hall-section {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  width: 100%;
+  max-width: 14rem;
+  margin-inline: auto;
+  text-align: center;
+  text-decoration: none;
+}
+
+.hall-section:focus-visible {
+  outline: 2px solid rgb(var(--color-primary-400));
+  outline-offset: 4px;
+  border-radius: 0.5rem;
+}
+
+/* No frame — just the icon. The fixed height is what the frame used to do for
+ * free: it reserves the same vertical space in every column whatever the
+ * icon's own proportions are, so the four labels share a baseline. */
+.hall-section-figure {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  height: 5.5rem;
+  color: rgb(var(--color-primary-600));
+  transition: color 0.15s ease, transform 0.15s ease;
+}
+
+/* With no border to tint, hover moves and brightens the icon itself. */
+.hall-section:hover .hall-section-figure {
+  color: rgb(var(--color-primary-700));
+  transform: translateY(-2px);
+}
+
+/* `.icon` is the span the theme's icon partial wraps every SVG in. It emits
+ * that span as `block`, which would take the full width of the column and
+ * leave the glyph flush left inside it, hence the centring here. */
+.hall-section-figure .icon {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+/* Three classes deep on purpose. The hub renders inside an article body, so
+ * `.article-content .icon svg` further down also matches these; at equal
+ * specificity it would win on source order and pin them to 1em. */
+.hall-sections .hall-section-figure .icon svg {
+  width: 4.75rem;
+  max-width: 100%;
+  height: auto;
+}
+
+.hall-section-label {
+  font-size: 1.15rem;
+  font-weight: 700;
+  line-height: 1.25;
+  color: rgb(var(--color-neutral-900));
+  transition: color 0.15s ease;
+}
+
+.hall-section:hover .hall-section-label {
+  color: rgb(var(--color-primary-700));
+}
+
+/* Weight reset, not decoration: the theme bolds links inside .prose, and the
+ * card is one link, so the blurb inherits that bold without this. */
+.hall-section-blurb {
+  font-size: 0.875rem;
+  font-weight: 400;
+  line-height: 1.4;
+  text-wrap: balance;
+  color: rgb(var(--color-neutral-600));
+}
+
+.dark .hall-section-figure {
+  color: rgb(var(--color-primary-400));
+}
+
+.dark .hall-section:hover .hall-section-figure {
+  color: rgb(var(--color-primary-300));
+}
+
+.dark .hall-section-label {
+  color: rgb(var(--color-neutral-100));
+}
+
+.dark .hall-section:hover .hall-section-label {
+  color: rgb(var(--color-primary-300));
+}
+
+.dark .hall-section-blurb {
+  color: rgb(var(--color-neutral-300));
+}
+
+/* ------------------------------------------------------ content icons ---- */
+
+/* Styling for icons inside an article body. Nothing in content/ uses these at
+ * the moment — icons live on the /about hub — but both routes in are kept
+ * working, so putting one in a page is a content edit and not a CSS job:
+ *
+ *   ### A Housing Contact {icon="location-dot"}   — heading attribute, rendered
+ *                                                   by _markup/render-heading.html
+ *   {{ icon "signal" }}                           — the theme's shortcode, for
+ *                                                   table cells and inline use
+ *
+ * Sized in `em` against whatever they sit in, so one name works at h2, at h3
+ * and in a table row without a size per site. */
+.article-content .icon {
+  color: rgb(var(--color-primary-500));
+}
+
+.article-content .icon svg {
+  width: 1em;
+  height: 1em;
+}
+
+/* Table cells are the one place an icon butts straight up against bold text,
+ * because there's no space character between shortcode and label. */
+.article-content td .icon,
+.article-content th .icon {
+  margin-inline-end: 0.35em;
+}
+
+.dark .article-content .icon {
+  color: rgb(var(--color-primary-400));
+}
+
+/* Deliberately under the heading's own size: the icon marks the heading, it
+ * doesn't share billing with it. The theme's icon partial emits a `block`
+ * span, which would drop the text to the next line, hence the override. */
+.hall-heading-icon {
+  display: inline-block;
+  margin-inline-end: 0.45em;
+  font-size: 0.78em;
+}
+
+.hall-heading-icon .icon {
+  display: inline-block;
+}
+
+/* Back to the parent page, above the title on any page with `back:` set. */
+.hall-back {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  margin-bottom: 0.5rem;
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: rgb(var(--color-neutral-500));
+  text-decoration: none;
+}
+
+.hall-back:hover {
+  color: rgb(var(--color-primary-600));
+}
+
+/* Nudged on hover rather than underlined, so the arrow reads as the direction
+ * it points instead of as decoration. */
+.hall-back-arrow {
+  transition: transform 0.15s ease;
+}
+
+.hall-back:hover .hall-back-arrow {
+  transform: translateX(-0.15rem);
+}
+
+.dark .hall-back {
+  color: rgb(var(--color-neutral-400));
+}
+
+.dark .hall-back:hover {
+  color: rgb(var(--color-primary-400));
+}
+
 /* ---------------------------------------------------------- /join page ---- */
 
 .hall-join {

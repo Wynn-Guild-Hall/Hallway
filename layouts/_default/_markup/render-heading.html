@@ -1,0 +1,40 @@
+{{/* Copy of themes/blowfish/layouts/_default/_markup/render-heading.html with
+     one addition: a heading can carry an icon.
+
+       ### An Ownership Contact {icon="star"}
+
+     renders the named SVG from assets/icons/ (ours, then the theme's) ahead of
+     the heading text.
+
+     Nothing in content/ uses this today — icons are confined to the /about hub
+     — but the capability is kept deliberately, because the alternative anyone
+     would otherwise reach for is broken in a way that isn't visible. Hugo
+     replaces a shortcode with a placeholder token before markdown runs, and
+     Goldmark then computes the heading's id from the text *including* that
+     token, so `## {{ icon }} Seat Allocation` produced
+     id="hahahugoshortcode7s0hbhb-seat-allocation" and quietly broke every link
+     to #seat-allocation. A heading attribute is stripped before the id is
+     computed, so the anchor stays what the text says it is.
+
+     Attributes on headings need markup.goldmark.parser.attribute.title, which
+     is on by default. Everything else here is upstream's, unchanged.
+
+     On a theme bump:
+
+       diff --strip-trailing-cr \
+         themes/blowfish/layouts/_default/_markup/render-heading.html \
+         layouts/_default/_markup/render-heading.html
+
+     should show this comment and the icon span, and nothing else. */}}
+{{ $anchor := anchorize .Anchor }}
+<h{{ .Level }} class="relative group">
+    {{- with .Attributes.icon }}<span class="hall-heading-icon" aria-hidden="true">{{ partial "icon.html" . }}</span>{{ end -}}
+    {{ .Text | safeHTML }}
+    <div id="{{ $anchor }}" class="anchor"></div>
+    {{ if .Page.Params.showHeadingAnchors | default (.Page.Site.Params.article.showHeadingAnchors | default true) }}
+    <span
+        class="absolute top-0 w-6 transition-opacity opacity-0 -start-6 not-prose group-hover:opacity-100 select-none">
+        <a class="text-primary-300 dark:text-neutral-700 !no-underline" href="#{{ $anchor }}" aria-label="{{ i18n "article.anchor_label" }}">#</a>
+    </span>
+    {{ end }}
+</h{{ .Level }}>

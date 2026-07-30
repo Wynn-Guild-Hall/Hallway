@@ -12,11 +12,13 @@ Public website for the Wynncraft Guild Hall at [hall.wynnvets.org](https://hall.
 ## Layout landmarks
 
 - `config/_default/` — site config, split the way Blowfish splits its own: `hugo.toml` (core), `params.toml` (theme options), `languages.en.toml` (title, logo, author), `menus.en.toml` (nav), `markup.toml`.
-- `content/` — Markdown pages. `_index.md` is the homepage hero; `about.md`; `join/_index.md`.
+- `content/` — Markdown pages. `_index.md` is the homepage hero; `about/_index.md` is a hub of four cards into `about/what.md`/`why.md`/`who.md`/`how.md`; `join/_index.md`. Those four carry `icon:` and `back: "about"` front matter, which puts them on the hub and gives them a link back to it, plus `aliases:` for the pre-move `/<name>/` URLs. The `icon:` draws that page's card on `/about` — the pages themselves carry no icons; their bodies are plain Markdown.
 - `layouts/join/single.html` — the /join eligibility form. Selected by `layout: "single"` in that page's front matter.
 - `layouts/partials/home/background.html` — override of Blowfish's hero. Ours keeps the theme's background-image mechanics but drops the author avatar/social-links/recent-articles block, because the crest is a hexagon (the theme's `rounded-full` clips it) and this is an organisation, not a person.
 - `layouts/partials/subtext.html` — rewrites Discord's `-#` subtext marker into `<p class="hall-subtext">`. Runs on rendered HTML because Hugo has no paragraph render hook. Every layout that prints `.Content` pipes it through this.
-- `layouts/_default/single.html` — a verbatim copy of the theme's, one line changed, so ordinary pages get that same rewrite. Re-copy and re-apply on a theme bump; `diff` against the theme file should show only that line and the header comment.
+- `layouts/_default/single.html` — a copy of the theme's with two changes: the subtext rewrite, and a back link for pages that set `back:` in front matter. Re-copy and re-apply on a theme bump; `diff --strip-trailing-cr` against the theme file should show only those two hunks and the header comment.
+- `layouts/shortcodes/hall-sections.html` — the card grid on `/about`. Reads the About group out of `menus.en.toml`, so the sub-pages are declared once; each card's icon is the target page's `icon:` front matter and its blurb is that page's `description`.
+- `layouts/_default/_markup/render-heading.html` — the theme's, plus `### A Housing Contact {icon="location-dot"}`. Nothing uses it (icons are hub-only by convention), but it's kept so that anyone who wants a body icon reaches for the attribute rather than the `icon` shortcode — a shortcode in a heading leaks Hugo's placeholder into the id and yields anchors like `hahahugoshortcode7s0hbhb-seat-allocation`.
 - `assets/img/hall.webp` — the hero screenshot. `assets/img/guilds_wynn.png` — the crest, used as header logo and as the source for every favicon in `static/`.
 - `assets/css/schemes/wynn.css` — the palette, sampled from the crest. `assets/css/custom.css` — everything else.
 - `static/js/lookup.js` + `static/js/request_code.js` — the /join page's client-side logic.

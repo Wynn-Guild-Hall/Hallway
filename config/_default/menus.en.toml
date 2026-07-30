@@ -2,40 +2,45 @@
 #
 # "About" is both a page and a dropdown. Blowfish's desktop-menu renders a
 # parent that has children as a still-clickable link with a chevron appended,
-# so the overview page stays reachable from the nav while What/Why/Who/How hang
+# so the hub page stays reachable from the nav while What/Why/Who/How hang
 # beneath it. Children attach by the parent's `identifier`, not its `name`.
+#
+# This group is also what builds the cards on /about — see
+# layouts/shortcodes/hall-sections.html. Adding a fifth sub-page here adds a
+# fifth card there, in weight order. Keep the `pageRef` paths absolute: they
+# are what the shortcode resolves each card's page from.
 
 [[main]]
   identifier = "about"
   name = "About"
-  pageRef = "about"
+  pageRef = "/about"
   weight = 10
 
 [[main]]
   parent = "about"
   name = "What"
-  pageRef = "what"
+  pageRef = "/about/what"
   weight = 11
 
 [[main]]
   parent = "about"
   name = "Why"
-  pageRef = "why"
+  pageRef = "/about/why"
   weight = 12
 
 [[main]]
   parent = "about"
   name = "Who"
-  pageRef = "who"
+  pageRef = "/about/who"
   weight = 13
 
 [[main]]
   parent = "about"
   name = "How"
-  pageRef = "how"
+  pageRef = "/about/how"
   weight = 14
 
 [[main]]
   name = "Join"
-  pageRef = "join"
+  pageRef = "/join"
   weight = 20
